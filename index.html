@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Map Project</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Compiled and minified CSS -->
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js" integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg==" crossorigin=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/13.1.1/nouislider.js" integrity="sha256-RSuaLYAi3KF8Dt9ftncQaaJt6ZAJs1QxETdEFghKvvE=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/13.1.1/nouislider.css" integrity="sha256-OFKKJT+zg7E+i5NVtrHToDVtOVBBfAdpvFyWHzztaCU=" crossorigin="anonymous" />
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js" integrity="sha256-HT7c4lBipI1Hkl/uvUrU1HQx4WF3oQnSafPjgR9Cn8A=" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha256-1fEPhSsRKlFKGfK3eO710tEweHh1fwokU5wFGDHO+vg=" crossorigin="anonymous"></script>
+    <script src="EdmontonPA_out\data_list.js"></script>
+    <script src="prop_info_out\prop_list.js"></script>
+    <script src="prop_info_out\account_list.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <style>
+        #overlay {
+            position: fixed;
+            /* Sit on top of the page content */
+            align: center;
+            display: none;
+            /* Hidden by default */
+            width: 100%;
+            /* Full width (cover the whole page) */
+            height: 100%;
+            /* Full height (cover the whole page) */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Black background with opacity */
+            z-index: 15;
+            /* Specify a stack order in case you're using a different order for other elements */
+            cursor: pointer;
+            /* Add a pointer on hover */
+        }
+        
+        .default_header_text {
+            color: white;
+            text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+        }
+        
+        .info {
+            padding: 6px 8px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+            background: white;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+        
+        .info h4 {
+            margin: 0 0 5px;
+            color: #777;
+        }
+        
+        .legend {
+            line-height: 18px;
+            color: #555;
+        }
+        
+        .legend i {
+            width: 15px;
+            height: 15px;
+            float: left;
+            margin-right: 8px;
+            opacity: 0.7;
+        }
+    </style>
+
+</head>
+
+<body bgcolor="#e8e8e8">
+    <div id="top_banner" style="padding:15px; background-color:#FFFFFF; margin: auto auto ;width: 100%;  text-align:center;box-shadow: 0 0 10px -2px black">
+        <h1 style="color: #000;font-size: 18pt; font-family: 'arial black', 'avant garde';margin: 0px auto 0;">Ymap (Beta)</h1>
+    </div>
+    <div id="overlay" style="text-align: center">
+        <img style="margin:10% auto; height:200px;width:200px;" src="https://upload.wikimedia.org/wikipedia/commons/a/a3/Lightness_rotate_36f_cw.gif" alt="Please wait a sec." />
+    </div>
+
+    <div id="parent" style=" display: table; margin: 0 auto;width: 95%; height:1000px;">
+
+        <div id="left panel" style="float:left;width:80%; height:100%;">
+
+            <div id="mapid" style="z-index: 1;width:95%; height:100%; margin: 15px auto;border-style: groove;border-radius:20px;padding:6px;"></div>
+            <div id="tos" style="margin:0 auto;text-align:center">
+                <p style="margin:0 auto"><span style="font-size: 10pt;margin:0 auto">This software is released under the&nbsp;<a href="https://raw.githubusercontent.com/rayliuca/Ymap/master/LICENSE">MIT License</a>, and provided without any warranty.
+		Data source: &nbsp;<a href="https://data.edmonton.ca/City-Administration/Property-Assessment-Data-2012-2018-/qi6a-xuwt">Edmonton Open Data Website</a>.</span></p>
+
+            </div>
+        </div>
+        <div id="right panel" style="float:left;width:20%; height:100%;">
+            <div id="ui_container" style="background:#ffffff; width:85%;margin:15px auto;box-shadow: 0px 2px 8px -3px #777;border-radius:20px;padding:10px">
+
+                <div class="input-field col s12">
+                    <select multiple Id="load assessment years" style="float: center; width: 60%; margin:0px auto">
+                    </select>
+                    <label>Choose which assessment years to load</label>
+                </div>
+                <button id="load assessment button" class="waves-effect waves-light btn" onclick="user_load();" style="margin:0 0 10px">Load Assessments</button>
+                <div class="input-field col s12">
+                    <select required Id="assessment 1" size="3" style="float: center; width: 60%; margin:10px 0px">
+                    </select>
+                    <label>Choose the first assessment year</label>
+                </div>
+
+                <div class="input-field col s12">
+                    <select Id="assessment 2" style="float: center; width: 60%; margin:10px 0px">
+                        <option value="None">None</option>
+                    </select>
+                    <label>Choose second year (optional, plot the change from yr1-> yr2)</label>
+                </div>
+
+                <div class="input-field col s12">
+                    <select multiple Id="zoning" style="float: center; width: 60%; margin:10px 0px">
+                    </select>
+                    <label>Select zoning</label>
+                </div>
+
+                <div id="assessment value slider container" style="width: 100%; margin:0 auto">
+                    Set assessment value range (CAD)
+                    <div id="assessment value slider" style=" width:95%; margin:10px auto 0px"></div>
+                    <input id="assessment lower bound" type="number" style="width:40%;margin:0px 10% 0px 0% " />
+                    <input id="assessment upper bound" type="number" style="float: right; width: 40%;margin:0px 0 0 10%" />
+
+                </div>
+                <div id="lot size slider container" style=" width: 100%;margin:10px auto 10px">
+                    <div style="">Set lot size (square meter)</div>
+                    <div id="lot size slider" style=" width: 95%; margin:10px auto 0px"></div>
+                    <input id="lot lower bound" type="number" style=" width:40%; " />
+                    <input id="lot upper bound" type="number" style="float: right; width: 40%;" />
+                </div>
+                <div id="lot size slider container" style=" width: 100%;margin:10px auto 10px">
+                    Set colour range
+                    <div id="assessment colour" class="range-field col s12" style=" width:95%; margin:10px auto 0px"></div>
+                    <div id="colour value" style="margin:10px 0"></div>
+                </div>
+                <div>
+                    <button id="plot button" class="waves-effect waves-light btn" onclick="user_plot();" style=" margin:0 0px 5px 65%">Plot!</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+<script>
+    //////////////////////////////////////////////////////////
+
+    default_zoning_selection = ["RF1", "RF2", "RF3"];
+    default_assessment_range = [100000, 800000];
+    default_lot_range = [100, 2000];
+    default_assessment_change_range = [-10, 10];
+    assessment_change_range = [-25, 25];
+
+    var setup_select = function(select_menu_id, options_array) {
+
+        menu = document.getElementById(select_menu_id);
+
+        if (Object.prototype.toString.call(options_array) == "[object Object]") {
+            keys = Object.keys(options_array);
+            key_count = keys.length;
+            optgroup_array = []
+            for (i = 0; i < key_count; i++) {
+                optgroup_array[i] = document.createElement('optgroup');
+                optgroup_array[i].id = keys[i];
+                optgroup_array[i].label = keys[i];
+                optgroup_options = options_array[keys[i]];
+
+                options = [];
+                for (j = 0; j < optgroup_options.length; j++) {
+                    options[j] = document.createElement("option");
+                    options[j].id = optgroup_options[j];
+                    options[j].text = optgroup_options[j];
+                    options[j].value = optgroup_options[j];
+                    optgroup_array[i].appendChild(options[j]);
+
+                }
+                menu.appendChild(optgroup_array[i]);
+
+            }
+
+            elems = document.querySelectorAll('select');
+            instances = M.FormSelect.init(elems, options);
+
+            return
+        }
+
+        option_len = options_array.length;
+        try {
+            current_options = menu.options;
+            for (i = current_options.length - 1; i >= 0; i--) {
+                if (current_options[i].value != "None") menu.remove(i);
+            }
+        } catch (error) {
+            // no action expected
+        }
+
+        options = [];
+        for (i = 0; i < option_len; i++) {
+            options[i] = document.createElement("option");
+            options[i].text = options_array[i];
+            options[i].value = options_array[i];
+            menu.add(options[i]);
+        }
+        elems = document.querySelectorAll('select');
+        instances = M.FormSelect.init(elems, options);
+
+    }
+
+    var get_selected_options = function(menu_id) {
+        selected = document.getElementById(menu_id).selectedOptions;
+        value_array = [];
+        for (i = 0; i < selected.length; i++) {
+            value_array[i] = selected[i].value;
+        }
+
+        return value_array
+    }
+
+    var user_load = function() {
+        throbber(1);
+        available_assessment = get_selected_options("load assessment years");
+        setup_select("assessment 1", available_assessment);
+        setup_select("assessment 2", available_assessment);
+        for (year_count = 0; year_count < available_assessment.length; year_count++) {
+            get_file(data_list, "year" + available_assessment[year_count], 'EdmontonPA_out');
+        }
+
+        if (typeof(prop_info) == "undefined") {
+            // the geo location of the accounts
+            get_file(prop_list, 'prop_info', 'prop_info_out');
+
+        }
+        <!-- return throbber(0); -->
+    }
+
+    year_opt = ["2012", "2013", "2014", "2015", "2016", "2017", "2018"];
+
+    setup_select("load assessment years", year_opt);
+
+    zoning_list = {
+        "Residential Zones": ["RF1", "RF2", "RF3", "RSL", "PRL", "RF4", "RF5", "RF6", "RA7", "RA8", "RA9", "RR", "UCRH"],
+        "Commercial Zones": ["CNC", "CSC", "CB1", "CB2", "CB3", "CHY"],
+        "Industrial Zones": ["IB", "IL", "IM", "IH"],
+        "Urban Services Zones": ["US", "PU", "MA", "AP", "NA", "A", "AN", "AJ", "Community Services Zones"],
+        "Agricultural and Reserve Zones": ["AG", "AGU", "AGI"],
+        "Direct Control Provisions": ["DC1", "DC2"]
+    };
+
+    setup_select("zoning", zoning_list);
+
+    assessment_1 = document.getElementById('assessment 1');
+    assessment_1.addEventListener('change', function() {
+
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        for (i = 0; i < default_zoning_selection.length; i++) {
+            document.getElementById(default_zoning_selection[i]).selected = true;
+        }
+
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems, options);
+    });
+
+    var update_slider = function(slider, handle, value) {
+        if (handle == 'low') {
+            if (value < slider.noUiSlider.options.range.min) {
+                slider.noUiSlider.updateOptions({
+                    start: [value, slider.noUiSlider.get()[1]],
+                    range: {
+                        'min': value,
+                        'max': slider.noUiSlider.options.range.max
+                    }
+                });
+            } else {
+                slider.noUiSlider.set([value, null]);
+            }
+        }
+        if (handle == 'high') {
+            if (value > slider.noUiSlider.options.range.max) {
+                slider.noUiSlider.updateOptions({
+                    start: [slider.noUiSlider.get()[0], value],
+                    range: {
+                        'min': slider.noUiSlider.options.range.min,
+                        'max': value
+                    }
+                });
+            } else {
+                slider.noUiSlider.set([null, value]);
+            }
+        }
+    }
+
+    var update_slider_range = function(slider, handle, value) {
+        if (handle == 'low') {
+            if (value < slider.noUiSlider.options.range.min) {
+                slider.noUiSlider.updateOptions({
+                    range: {
+                        'min': value,
+                        'max': slider.noUiSlider.options.range.max
+                    }
+                });
+            };
+        }
+        if (handle == 'high') {
+            if (value > slider.noUiSlider.options.range.max) {
+                slider.noUiSlider.updateOptions({
+                    range: {
+                        'min': slider.noUiSlider.options.range.min,
+                        'max': value
+                    }
+                });
+            };
+        }
+    }
+
+    var assessment_value_slider = document.getElementById('assessment value slider');
+
+    noUiSlider.create(assessment_value_slider, {
+        start: default_assessment_range,
+        connect: true,
+        range: {
+            'min': default_assessment_range[0],
+            'max': default_assessment_range[1]
+        },
+    });
+
+    assessment_lower_bound = document.getElementById('assessment lower bound');
+    assessment_upper_bound = document.getElementById('assessment upper bound');
+
+    assessment_lower_bound.addEventListener('change', function() {
+        update_slider_range(assessment_colour_slider, 'low', this.value - 0)
+        update_slider(assessment_value_slider, 'low', this.value - 0)
+    });
+
+    assessment_upper_bound.addEventListener('change', function() {
+        update_slider_range(assessment_colour_slider, 'high', this.value - 0)
+        update_slider(assessment_value_slider, 'high', this.value - 0)
+    });
+
+    assessment_value_slider.noUiSlider.on('update', function(values, handle) {
+
+        var value = values[handle];
+
+        if (!handle) {
+            assessment_lower_bound.value = value;
+        } else {
+            assessment_upper_bound.value = (value);
+        }
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems, options);
+    });
+
+    var lot_size_slider = document.getElementById('lot size slider');
+
+    noUiSlider.create(lot_size_slider, {
+        start: default_lot_range,
+        connect: true,
+        range: {
+            'min': default_lot_range[0],
+            'max': default_lot_range[1]
+        }
+
+    });
+
+    lot_lower_bound = document.getElementById('lot lower bound');
+    lot_upper_bound = document.getElementById('lot upper bound');
+
+    lot_lower_bound.addEventListener('change', function() {
+        update_slider(lot_size_slider, 'low', this.value - 0)
+
+    });
+
+    lot_upper_bound.addEventListener('change', function() {
+        update_slider(lot_size_slider, 'high', this.value - 0)
+    });
+
+    lot_size_slider.noUiSlider.on('update', function(values, handle) {
+
+        var value = values[handle];
+
+        if (!handle) {
+            lot_lower_bound.value = value;
+        } else {
+            lot_upper_bound.value = (value);
+        }
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems, options);
+    });
+
+    assessment_2 = document.getElementById('assessment 2');
+    assessment_2.addEventListener('change', function() {
+        if (get_selected_options("assessment 2")[0] != "None") {
+            try {
+                window.assessment_colour_slider.noUiSlider.destroy();
+                window.assessment_colour_slider = [];
+            } catch (error) {};
+            if (typeof(window.assessment_change_colour_slider) == "undefined" || typeof(window.assessment_change_colour_slider.noUiSlider) == "undefined") {
+                window.assessment_change_colour_slider = document.getElementById('assessment colour');
+                noUiSlider.create(window.assessment_change_colour_slider, {
+                    start: default_assessment_change_range,
+                    connect: true,
+                    range: {
+                        'min': assessment_change_range[0],
+                        'max': assessment_change_range[1]
+                    },
+                    format: wNumb({
+                        decimals: 3,
+                        suffix: "%",
+                    })
+                });
+
+                window.colour_value = document.getElementById("colour value");
+
+                assessment_change_colour_slider.noUiSlider.on('update', function(values) {
+                    window.colour_value.innerHTML = values.join(' to ');
+                });
+
+            }
+
+        } else {
+            try {
+                window.assessment_change_colour_slider.noUiSlider.destroy();
+                window.assessment_change_colour_slider = [];
+            } catch (err) {};
+            if (typeof(window.assessment_colour_slider) == "undefined" || typeof(window.assessment_colour_slider.noUiSlider) == "undefined") {
+                window.assessment_colour_slider = document.getElementById('assessment colour');
+                noUiSlider.create(assessment_colour_slider, {
+                    start: default_assessment_range,
+                    connect: true,
+                    range: {
+                        'min': default_assessment_range[0],
+                        'max': default_assessment_range[1]
+                    },
+                    format: wNumb({
+                        decimals: 0,
+                    })
+                });
+
+                window.colour_value = document.getElementById("colour value");
+
+                assessment_colour_slider.noUiSlider.on('update', function(values) {
+                    window.colour_value.innerHTML = values.join(' to ');
+                });
+
+            }
+
+        }
+    });
+    assessment_colour_slider = document.getElementById('assessment colour');
+    noUiSlider.create(assessment_colour_slider, {
+        start: default_assessment_range,
+        connect: true,
+        range: {
+            'min': default_assessment_range[0],
+            'max': default_assessment_range[1]
+        },
+        format: wNumb({
+            decimals: 0,
+        })
+    });
+    window.colour_value = document.getElementById("colour value");
+
+    assessment_colour_slider.noUiSlider.on('update', function(values) {
+        window.colour_value.innerHTML = values.join(' to ');
+    });
+    //////////////////////////////////////////////////////////////////////
+
+    var parent = document.getElementById("parent");
+    var page_height = (window.innerHeight) * 0.9;
+    var map = document.getElementById("mapid");
+
+    parent.style.height = page_height + "px";
+    map.style.height = (page_height - 20) + "px";
+
+    window.onload = window.onresize = function() {
+        page_height = (window.innerHeight) * 0.9;
+        parent.style.height = page_height + "px";
+        map.style.height = (page_height - 20) + "px";
+
+    }
+
+    require(['domReady.js']);
+
+    require.config({
+        waitSeconds: 600 // set the wait seconds to be high since we will need to require a lot of data
+    });
+
+    // we need a function to get all the data segments   
+    var throbber = function(on) {
+        if (on == 0) {
+            document.getElementById("overlay").style.display = "none";
+        } else {
+            document.getElementById("overlay").style.display = "block";
+
+        }
+
+    }
+
+    // we need to keep track of the file loading process
+    queue_length = 0;
+    var loading_queue = function(num = 1) {
+        queue_length = queue_length + num;
+        throbber(1);
+        <!-- console.log("throbber on, queue_length=" + queue_length); -->
+        if (num < 0 && queue_length == 0) {
+            loading_complete();
+        }
+    }
+
+    var loading_complete = function() {
+        throbber(0);
+        <!-- console.log("throbber removed"); -->
+    }
+
+    // we need a function to get all the data segments   
+    var get_file = function(obj_list, str, path_to_data) {
+
+        if (typeof obj_list[str] != "undefined" && obj_list[str] != null) {
+            // get the small segments of the data
+            require([path_to_data + '\\' + str]);
+            for (i = 1; i <= obj_list[str]; i++) {
+                loading_queue(1)
+                require([path_to_data + '\\' + str + '_' + String(i)], function() {
+                    loading_queue(-1);
+                    // call the fuse_data function to piece segments together
+                    fuse_data(obj_list, str);
+                });
+
+            }
+
+        }
+        return
+    }
+
+    // this function is to fuse small segments of data together
+    var fuse_data = function(obj_list, str) {
+        for (j = 1; j <= obj_list[str]; j++) {
+            // try case is used since the data might not be required yet
+            // since we will be calling this function many times,
+            // it will fuse everythint eventually 
+            try {
+                // this try case is for array type of data
+                window[str] = window[str].concat(window[str + '_' + String(j)]);
+                <!-- eval(str+'='+ str+'.concat('+str+'_'+String(j)+')');// add additional segment to the main segment -->
+                window[str + '_' + String(j)] = [];
+                <!-- eval(str+'_'+String(j)+'=[]');// delete the small peice -->
+            } catch (err) {
+                // the try case for object data type
+                try {
+                    eval(str + '=Object.assign(' + str + ', ' + str + '_' + String(j) + ')');
+                    eval(str + '_' + String(j) + '={}');
+
+                } catch (err) {
+                    // no action expected
+                }
+
+            }
+
+        }
+
+    }
+
+    // get points to plot base on some requirements
+    // not really useful right now, but it will be used to
+    // filter the data points when the UI is implemented 
+    var getPoints = function(str1, str2, loc) {
+
+        result_loc = [];
+        arr_length = account_list.length;
+        for (var i = 0; i < arr_length; i++) {
+            if (i > arr_length) break;
+            try {
+                acc_num = account_list[i]
+                prop_info_obj = loc[acc_num];
+                if (str2 == "None") {
+                    data1 = window["year" + str1];
+                    if (data_selector(data1[acc_num], loc[acc_num], get_selected_options("zoning"))) {
+                        result_loc[i] = [data1[acc_num]["Assessed Value"], prop_info_obj.Latitude, prop_info_obj.Longitude, acc_num];
+                    }
+                } else {
+                    data1 = window["year" + str1];
+                    data2 = window["year" + str2];
+                    if (data_selector(data1[acc_num], loc[acc_num], get_selected_options("zoning"))) {
+                        result_loc[i] = [data2[acc_num]["Assessed Value"] / data1[acc_num]["Assessed Value"] - 1, prop_info_obj.Latitude, prop_info_obj.Longitude, acc_num];
+                    }
+
+                }
+            } catch (err) {}
+
+        }
+        data1 = [];
+        return result_loc;
+
+    }
+
+    assessment_low_bound = 100000;
+    assessment_high_bound = 800000;
+    lot_low_bound = 100;
+    lot_high_bound = 2000;
+    var data_selector = function(data_point, geo_data, selected_zoning) {
+
+        switch (true) {
+            case parseInt(data_point["Assessed Value"]) < parseInt(assessment_lower_bound.value):
+                return 0;
+            case parseInt(data_point["Assessed Value"]) > parseInt(assessment_upper_bound.value):
+                return 0;
+            case parseInt(data_point["Lot Size"]) < parseInt(lot_lower_bound.value):
+                return 0;
+            case parseInt(data_point["Lot Size"]) > parseInt(lot_upper_bound.value):
+                return 0;
+            case 1:
+                for (i = 1; i < selected_zoning.length; i++) {
+                    current_zoning = data_point["Zoning"];
+                    zoning_fine = 0;
+                    if (current_zoning == selected_zoning) {
+                        zoning_fine = 1;
+                        break;
+                    }
+
+                }
+                return 0;
+
+        }
+
+        return 1
+    }
+
+    RGB_gradient = [
+        [151, 237, 229],
+        [96, 196, 145],
+        [47, 140, 68],
+        [165, 139, 33],
+        [206, 149, 43],
+        [237, 89, 75],
+        [174, 100, 214],
+    ]
+    RGB_gradient_function = [];
+    RGB_steps = RGB_gradient.length - 1;
+    for (i = 0; i < RGB_steps; i++) {
+        RGB_gradient_function[i] = []
+        for (j = 0; j < 3; j++) {
+            RGB_gradient_function[i].push([(RGB_gradient[i + 1][j] - RGB_gradient[i][j]) * RGB_steps, RGB_gradient[i][j]])
+        }
+
+    }
+
+    // get the RGB color to plot on the border of the circle markers
+    var get_color = function(val, min_val, max_val) {
+        val = (val - min_val) / (max_val - min_val) * 100
+        switch (true) {
+            case (val > 0 && val < 100):
+                color_index = parseInt(val / 100 * (RGB_steps));
+                color_x = val - parseInt(val / (100 / RGB_steps)) * 100 / RGB_steps;
+                r = RGB_gradient_function[color_index][0][0] * (val) / RGB_steps / 100 + RGB_gradient_function[color_index][0][1];
+                g = RGB_gradient_function[color_index][1][0] * (val) / RGB_steps / 100 + RGB_gradient_function[color_index][1][1];
+                b = RGB_gradient_function[color_index][2][0] * (val) / RGB_steps / 100 + RGB_gradient_function[color_index][2][1];
+                break;
+            case (val < 0 || val > 100):
+                return "rgb(175, 175, 175)";
+                break;
+            case (val == 0):
+                [r, g, b] = RGB_gradient[0];
+                break;
+
+            case (val == 100):
+                [r, g, b] = RGB_gradient[RGB_steps];
+                break;
+        }
+
+        try {
+            return 'rgb(' + Math.round(r) + ',' + Math.round(g) + ',' + Math.round(b) + ')';
+        } catch (err) {
+            console.log(val)
+        }
+
+    }
+
+    // set up the map use leaflet
+    var mymap = L.map('mapid', {
+        renderer: L.canvas(),
+        markerZoomAnimation: false,
+        zoomAnimation: false,
+
+    });
+    mymap.setView([53.532146, -113.502502], 12);
+
+    // add map tile from wikimedia. Thanks wiki!
+    L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {
+        maxZoom: 18,
+        attribution: '<a href="https://rayliu.ca">Ray Liu</a>, ' +
+            'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+            '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+            '<a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>',
+        id: 'OpenStreetMap.Mapnik'
+    }).addTo(mymap);
+    // set a layer group so the points can be easily removed
+    data_points = L.layerGroup().addTo(mymap)
+
+    var legend = L.control({
+        position: 'bottomright'
+    });
+    var make_legend = function(min, max) {
+        min = parseInt(min);
+        max = parseInt(max);
+
+        legend.onAdd = function(map) {
+            max_min_range = max - min;
+            div = L.DomUtil.create('div', 'info legend');
+            if (max > 100000) round_stop = 1000;
+            else round_stop = 1;
+            legend_step = [];
+            for (i = 0; i < RGB_steps; i++) {
+                legend_step.push(Math.round((max_min_range / (RGB_steps + 1) * (i + 1) + min) / round_stop) * round_stop);
+            }
+            grades = legend_step;
+            grades.unshift(min);
+            grades.push(max);
+
+            labels = [];
+            if (min > 0) grades.unshift(0);
+            else grades.unshift(min * 2)
+                // loop through our density intervals and generate a label with a colored square for each interval
+            for (var i = 0; i < grades.length; i++) {
+				prefix='';
+				suffix='<br>';
+				if (typeof(grades[i-1]) == "undefined") prefix='< ';
+				else if (typeof(grades[i+1]) == "undefined") prefix=' >';
+				else suffix=' &ndash; ' + grades[i + 1]+ '<br>';
+                
+				div.innerHTML +=
+                    '<i style="background:' + get_color(grades[i] + 1, min, max) + '"></i> ' +
+                    prefix+grades[i] + suffix;
+            }
+
+            return div;
+        };
+
+        legend.addTo(mymap);
+    }
+
+    c_radius = 3; // set circle radius to be 3m
+
+    // plot points as circle markers on the leaflet map
+    function plot_points(arr, assessment2_str) {
+        arr_length = arr.length;
+        marker_plotted = 0;
+        try {
+            colour_array = assessment_colour_slider.noUiSlider.get()
+        } catch (err) {
+            colour_array = assessment_change_colour_slider.noUiSlider.get()
+            colour_array[0] = colour_array[0].slice(0, -1);
+            colour_array[1] = colour_array[1].slice(0, -1);
+
+        }
+        for (var i = 0; i < arr_length; i++) {
+            if (typeof arr[i] != "undefined" && arr[i] != null) {
+                if (assessment2_str == "None") {
+                    text = "<p> Assessed Value: " + arr[i][0].toString() + "</p> <p>Account#: " + arr[i][3].toString() + "</p>";
+
+                } else {
+                    text = "<p> Assessment Change: " + (arr[i][0] * 100).toPrecision(3).toString() + "%</p> <p>Account#: " + arr[i][3].toString() + "</p>";
+                    arr[i][0] = arr[i][0] * 100;
+
+                }
+
+                //make the marker
+                marker = new L.circle([arr[i][1], arr[i][2]], {
+                        radius: c_radius,
+                        color: (get_color(arr[i][0], colour_array[0], colour_array[1]))
+                    })
+                    .bindPopup(text) // add the pop up text
+                    .addTo(data_points);
+                marker_plotted++;
+
+            }
+        }
+        make_legend(colour_array[0], colour_array[1])
+        console.log(marker_plotted.toString() + " markers plotted");
+        return loading_queue(-1);
+
+    }
+
+    var popup = L.popup(); // set the pop up layer
+
+    // the main function first setup the markers and plot them
+    var user_plot = function() {
+        throbber(1);
+        loading_queue(1);
+
+        setTimeout(function() {
+			
+            return execute_plot();
+        }, 50);
+
+    }
+
+    var execute_plot = function() {
+        data_points.clearLayers();
+        marker_loc = getPoints(get_selected_options("assessment 1")[0], get_selected_options("assessment 2")[0], prop_info);
+        return plot_points(marker_loc, get_selected_options("assessment 2")[0]);
+    }
+
+    window.addEventListener('load',
+        function() {
+
+        }, false);
+</script>
+
+</html>
