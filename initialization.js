@@ -208,7 +208,7 @@ parameter2_upper_bound.addEventListener("change", function() {
 
 parameter2_slider.noUiSlider.on("update", function(values, handle) {
 
-	let value = values[handle];
+	let value = values[parseInt(handle,10)];
 
 	if (!handle) {
 		parameter2_lower_bound.value = value;

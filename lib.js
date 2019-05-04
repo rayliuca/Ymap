@@ -214,13 +214,13 @@ let data_selector = function(data_point, geo_data, selected_tag) {
 	// essentially this will return if any criteria is not met
 	// hopefully will increase the efficiency than simple if else
 	switch (true) {
-		case parseInt(data_point[parameter1]) < parseInt(parameter1_lower_bound.value):
+		case parseInt(data_point[parameter1],10) < parseInt(parameter1_lower_bound.value,10):
 			return 0;
-		case parseInt(data_point[parameter1]) > parseInt(parameter1_upper_bound.value):
+		case parseInt(data_point[parameter1],10) > parseInt(parameter1_upper_bound.value,10):
 			return 0;
-		case parseInt(data_point[parameter2]) < parseInt(parameter2_lower_bound.value):
+		case parseInt(data_point[parameter2],10) < parseInt(parameter2_lower_bound.value,10):
 			return 0;
-		case parseInt(data_point[parameter2]) > parseInt(parameter2_upper_bound.value):
+		case parseInt(data_point[parameter2],10) > parseInt(parameter2_upper_bound.value,10):
 			return 0;
 		case true:
 			for (tag_count = 0; tag_count < selected_tag.length; tag_count++) {
@@ -244,8 +244,8 @@ let get_color = function(val, min_val, max_val) {
 	switch (true) {
 		//if val is absolutely inside of the bounds  
 		case (val > 0 && val < 100):
-			color_index = parseInt(val / 100 * (RGB_steps));
-			color_x = val - parseInt(val / (100 / RGB_steps)) * 100 / RGB_steps;
+			color_index = parseInt(val / 100 * (RGB_steps), 10);
+			color_x = val - parseInt(val / (100 / RGB_steps), 10) * 100 / RGB_steps;
 			//the RGB_gradient_function is essentially a linear interpolation between two rgb settings
 			//RGB_gradient_function is nested arrays in the form of [[R=[slope, intercept],G=....],[R=....]...]
 			r = RGB_gradient_function[color_index][0][0] * (val) / RGB_steps / 100 + RGB_gradient_function[color_index][0][1];
@@ -278,8 +278,8 @@ let get_color = function(val, min_val, max_val) {
 
 // this will generate the legend on the map
 let make_legend = function(min, max) {
-	min = parseInt(min);
-	max = parseInt(max);
+	min = parseInt(min, 10);
+	max = parseInt(max, 10);
 	
 	legend.onAdd = function(map) {
 		let max_min_range = max - min;
