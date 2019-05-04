@@ -12,23 +12,23 @@ var setup_select = function(select_menu_id, options_array) {
 		var optgroup_array = []
 		//extract the array in each object
 		for (i = 0; i < key_count; i++) {
-			optgroup_array[i] = document.createElement('optgroup');
-			optgroup_array[i].id = keys[i];
-			optgroup_array[i].label = keys[i];
-			var optgroup_options = options_array[keys[i]];
+			optgroup_array[parseInt(i)] = document.createElement('optgroup');
+			optgroup_array[parseInt(i)].id = keys[parseInt(i)];
+			optgroup_array[parseInt(i)].label = keys[parseInt(i)];
+			var optgroup_options = options_array[keys[parseInt(i)]];
 			
 			//active each of the option in the group as options
 			var options = [];
 			for (j = 0; j < optgroup_options.length; j++) {
-				options[j] = document.createElement("option");
-				options[j].id = optgroup_options[j];
-				options[j].text = optgroup_options[j];
-				options[j].value = optgroup_options[j];
-				optgroup_array[i].appendChild(options[j]);
+				options[parseInt(j)] = document.createElement("option");
+				options[parseInt(j)].id = optgroup_options[parseInt(j)];
+				options[parseInt(j)].text = optgroup_options[parseInt(j)];
+				options[parseInt(j)].value = optgroup_options[parseInt(j)];
+				optgroup_array[parseInt(i)].appendChild(options[parseInt(j)]);
 
 			}
 			// add it to the menu
-			menu.appendChild(optgroup_array[i]);
+			menu.appendChild(optgroup_array[parseInt(i)]);
 
 		}
 		
@@ -45,7 +45,7 @@ var setup_select = function(select_menu_id, options_array) {
 		//check to see if there are options that are not supposed to be here
 		var current_options = menu.options;
 		for (i = current_options.length - 1; i >= 0; i--) {
-			if (current_options[i].value != "None") menu.remove(i);
+			if (current_options[parseInt(i)].value != "None") menu.remove(i);
 		}
 	} catch (error) {
 		// no action expected
