@@ -17,13 +17,13 @@ data_1 = document.getElementById("data 1");
 //when data2 is not "None", so I need to update the colour slider here.
 data_2 = document.getElementById("data 2");
 data_2.addEventListener("change", function() {
-	if (get_selected_options("data 2")[0] != "None") {
+	if (get_selected_options("data 2")[0] !== "None") {
 		try {
 			//if there is a output value type change, destroy the old slider
 			window.parameter1_colour_slider.noUiSlider.destroy();
 			window.parameter1_colour_slider = [];
 		} catch (error) {};
-		if (typeof(window.parameter1_change_colour_slider) == "undefined" || typeof(window.parameter1_change_colour_slider.noUiSlider) == "undefined") {
+		if (typeof(window.parameter1_change_colour_slider) === "undefined" || typeof(window.parameter1_change_colour_slider.noUiSlider) === "undefined") {
 			//create the proper slider with proper parameters
 			window.parameter1_change_colour_slider = document.getElementById("colour slider");
 			noUiSlider.create(window.parameter1_change_colour_slider, {
@@ -53,7 +53,7 @@ data_2.addEventListener("change", function() {
 			window.parameter1_change_colour_slider.noUiSlider.destroy();
 			window.parameter1_change_colour_slider = [];
 		} catch (err) {};
-		if (typeof(window.parameter1_colour_slider) == "undefined" || typeof(window.parameter1_colour_slider.noUiSlider) == "undefined") {
+		if (typeof(window.parameter1_colour_slider) === "undefined" || typeof(window.parameter1_colour_slider.noUiSlider) === "undefined") {
 			window.parameter1_colour_slider = document.getElementById("colour slider");
 			noUiSlider.create(parameter1_colour_slider, {
 				start: default_slider1_range,
@@ -83,7 +83,7 @@ data_2.addEventListener("change", function() {
 //These two (update_slider and update_slider_range) are functions 
 //to help us control the noUiSlider
 let update_slider = function(slider, handle, value) {
-	if (handle == "low") {
+	if (handle === "low") {
 		if (value < slider.noUiSlider.options.range.min) {
 			slider.noUiSlider.updateOptions({
 				start: [value, slider.noUiSlider.get()[1]],
@@ -96,7 +96,7 @@ let update_slider = function(slider, handle, value) {
 			slider.noUiSlider.set([value, null]);
 		}
 	}
-	if (handle == "high") {
+	if (handle === "high") {
 		if (value > slider.noUiSlider.options.range.max) {
 			slider.noUiSlider.updateOptions({
 				start: [slider.noUiSlider.get()[0], value],

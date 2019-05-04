@@ -45,7 +45,7 @@ let setup_select = function(select_menu_id, options_array) {
 		//check to see if there are options that are not supposed to be here
 		let current_options = menu.options;
 		for (let i = current_options.length - 1; i >= 0; i--) {
-			if (current_options[parseInt(i,10)].value != "None") menu.remove(i);
+			if (current_options[parseInt(i,10)].value !== "None") menu.remove(i);
 		}
 	} catch (error) {
 		// no action expected
@@ -54,10 +54,10 @@ let setup_select = function(select_menu_id, options_array) {
 	let options = [];
 	for (let i = 0; i < option_len; i++) {
 		//add each member to the option list
-		options[i] = document.createElement("option");
-		options[i].text = options_array[i];
-		options[i].value = options_array[i];
-		menu.add(options[i]);
+		options[parseInt(i,10)] = document.createElement("option");
+		options[parseInt(i,10)].text = options_array[parseInt(i,10)];
+		options[parseInt(i,10)].value = options_array[parseInt(i,10)];
+		menu.add(options[parseInt(i,10)]);
 	}
 	elems = document.querySelectorAll("select");
 	instances = M.FormSelect.init(elems, materialize_options);
@@ -70,7 +70,7 @@ let get_selected_options = function(menu_id) {
 	let selected = document.getElementById(menu_id).selectedOptions;
 	let value_array = [];
 	for (let i = 0; i < selected.length; i++) {
-		value_array[i] = selected[i].value;
+		value_array[parseInt(i,10)] = selected[parseInt(i,10)].value;
 	}
 
 	return value_array
@@ -122,7 +122,7 @@ let loading_queue = function(num = 1) {
 // we need a function to get all the data segments   
 let get_file = function(obj_list, str, path_to_data) {
 
-	if (typeof obj_list[str] != "undefined" && obj_list[str] != null) {
+	if (typeof obj_list[str] !== "undefined" && obj_list[str] !== null) {
 		// get the small segments of the data
 		require([path_to_data + "\\" + str]);
 		for (let i = 1; i <= obj_list[str]; i++) {
@@ -178,14 +178,14 @@ let getPoints = function(str1, str2, loc) {
 	for (let i = 0; i < arr_length; i++) {
 		if (i > arr_length) break;
 		try {
-			let acc_num = window[input_id_catalog][i];
+			let acc_num = window[input_id_catalog][parseInt(i,10)];
 			let prop_info_obj = loc[acc_num];
 			
 			if (str2 == "None") {
 				// first case where the second data set is not selected
 				let data1 = window[input_data_file_pefix + str1];
 				if (data_selector(data1[acc_num], loc[acc_num], tag1_selected)) {
-					result_loc[i] = [data1[acc_num][parameter1], prop_info_obj.Latitude, prop_info_obj.Longitude, acc_num];
+					result_loc[parseInt(i,10)] = [data1[acc_num][parameter1], prop_info_obj.Latitude, prop_info_obj.Longitude, acc_num];
 					//here is where you can change the output data formula
 				}
 			} else {
@@ -193,7 +193,7 @@ let getPoints = function(str1, str2, loc) {
 				let data1 = window[input_data_file_pefix + str1];
 				let data2 = window[input_data_file_pefix + str2];
 				if (data_selector(data1[acc_num], loc[acc_num], tag1_selected)) {
-					result_loc[i] = [data2[acc_num][parameter1] / data1[acc_num][parameter1] - 1, prop_info_obj.Latitude, prop_info_obj.Longitude, acc_num];
+					result_loc[parseInt(i,10)] = [data2[acc_num][parameter1] / data1[acc_num][parameter1] - 1, prop_info_obj.Latitude, prop_info_obj.Longitude, acc_num];
 					//here is where you can change the output data formula
 				}
 
@@ -310,8 +310,8 @@ let make_legend = function(min, max) {
 			else suffix=" &ndash; " + grades[i + 1]+ "<br>";
 			
 			div.innerHTML +=
-				"<i style=background:" + get_color(grades[i] + 1, min, max) + "></i> " +
-				prefix+grades[i] + suffix;
+				"<i style=background:" + get_color(grades[parseInt(i,10)] + 1, min, max) + "></i> " +
+				prefix+grades[parseInt(i,10)] + suffix;
 		}
 
 		return div;
@@ -335,21 +335,21 @@ function plot_points(arr, parameter2_str) {
 
 	}
 	for (let i = 0; i < arr_length; i++) {
-		if (typeof arr[i] != "undefined" && arr[i] != null) {
+		if (typeof arr[parseInt(i,10)] !== "undefined" && arr[parseInt(i,10)] !== null) {
 			//make the pop up texts
 			if (parameter2_str == "None") {
-				text = "<p> "+parameter1+": " + arr[i][0].toString() + "</p> <p>"+id_key+": " + arr[i][3].toString() + "</p>";
+				text = "<p> "+parameter1+": " + arr[parseInt(i,10)][0].toString() + "</p> <p>"+id_key+": " + arr[parseInt(i,10)][3].toString() + "</p>";
 
 			} else {
-				text = "<p> "+parameter1+": " + (arr[i][0] * 100).toPrecision(3).toString() + "%</p> <p>"+id_key+": " + arr[i][3].toString() + "</p>";
-				arr[i][0] = arr[i][0] * 100;
+				text = "<p> "+parameter1+": " + (arr[parseInt(i,10)][0] * 100).toPrecision(3).toString() + "%</p> <p>"+id_key+": " + arr[parseInt(i,10)][3].toString() + "</p>";
+				arr[parseInt(i,10)][0] = arr[parseInt(i,10)][0] * 100;
 
 			}
 
 			//make the marker
-			marker = new L.circle([arr[i][1], arr[i][2]], {
+			marker = new L.circle([arr[parseInt(i,10)][1], arr[parseInt(i,10)][2]], {
 					radius: c_radius,
-					color: (get_color(arr[i][0], colour_array[0], colour_array[1]))
+					color: (get_color(arr[parseInt(i,10)][0], colour_array[0], colour_array[1]))
 				})
 				.bindPopup(text) // add the pop up text
 				.addTo(data_points);
