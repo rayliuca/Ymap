@@ -90,21 +90,21 @@ let setup_select = function(select_menu_id, options_array) {
 
 // this function is to fuse small segments of data together
 let fuse_data = function(obj_list, str) {
-	for (let j = 1; j <= obj_list[str]; j++) {
+	for (let j = 1; j <= obj_list[str.toString()]; j++) {
 		// try case is used since the data might not be required yet
 		// since we will be calling this function many times,
 		// it will fuse everythint eventually 
 		try {
 			// this try case is for array type of data
-			window[str] = window[str].concat(window[str + "_" + String(j)]);
+			window[str.toString()] = window[str.toString()].concat(window[str.toString() + "_" + String(j)]);
 
-			window[str + "_" + String(j)] = [];
+			window[str.toString() + "_" + String(j)] = [];
 
 		} catch (err) {
 			// the try case for object data type
 			try {
-				eval(str + "=Object.assign(" + str + ", " + str + "_" + String(j) + ")");
-				eval(str + "_" + String(j) + "={}");
+				window[str.toString()]=Object.assign(window[str.toString()],window[str.toString()+"_"+String(j)]);
+				window[str.toString()+"_"+String(j)]={};
 
 			} catch (err) {
 				// no action expected
@@ -119,10 +119,10 @@ let fuse_data = function(obj_list, str) {
 // we need a function to get all the data segments   
 let get_file = function(obj_list, str, path_to_data) {
 
-	if (typeof obj_list[str] !== "undefined" && obj_list[str] !== null) {
+	if (typeof obj_list[str.toString()] !== "undefined" && obj_list[str.toString()] !== null) {
 		// get the small segments of the data
 		require([path_to_data + "\\" + str]);
-		for (let i = 1; i <= obj_list[str]; i++) {
+		for (let i = 1; i <= obj_list[str.toString()]; i++) {
 			loading_queue(1)
 			require([path_to_data + "\\" + str + "_" + String(i)], function() {
 				loading_queue(-1);
@@ -157,12 +157,12 @@ let user_load = function() {
 	setup_select("data 1", available_data);
 	setup_select("data 2", available_data);
 	for (let year_count = 0; year_count < available_data.length; year_count++) {
-		get_file(window[input_data_catalog], input_data_file_pefix + available_data[year_count], input_data_folder);
+		get_file(window[input_data_catalog.toString()], input_data_file_pefix + available_data[parseInt(year_count,10)], input_data_folder);
 	}
 
-	if (typeof(window[input_geo_file_prefix]) === "undefined") {
+	if (typeof(window[input_geo_file_prefix.toString()]) === "undefined") {
 		// the geo location of the accounts
-		get_file(window[input_geo_catalog], input_geo_file_prefix, input_geo_folder);
+		get_file(window[input_geo_catalog.toString()], input_geo_file_prefix, input_geo_folder);
 
 	}
 
@@ -178,25 +178,25 @@ let user_load = function() {
 let getPoints = function(str1, str2, loc) {
 
 	let result_loc = [];
-	let arr_length = window[input_id_catalog].length;
+	let arr_length = window[input_id_catalog.toString()].length;
 	let tag1_selected=get_selected_options("tag1");
 	for (let i = 0; i < arr_length; i++) {
 		if (i > arr_length) break;
 		try {
-			let acc_num = window[input_id_catalog][parseInt(i,10)];
+			let acc_num = window[input_id_catalog.toString()][parseInt(i,10)];
 			let prop_info_obj = loc[acc_num];
 			
 			if (str2 === "None") {
 				// first case where the second data set is not selected
-				let data1 = window[input_data_file_pefix + str1];
+				let data1 = window[input_data_file_pefix.toString() + str1.toString()];
 				if (data_selector(data1[acc_num], loc[acc_num], tag1_selected)) {
 					result_loc[parseInt(i,10)] = [data1[acc_num][parameter1], prop_info_obj.Latitude, prop_info_obj.Longitude, acc_num];
 					//here is where you can change the output data formula
 				}
 			} else {
 				// when the second data set is selected
-				let data1 = window[input_data_file_pefix + str1];
-				let data2 = window[input_data_file_pefix + str2];
+				let data1 = window[input_data_file_pefix.toString() + str1.toString()];
+				let data2 = window[input_data_file_pefix.toString() + str2.toString()];
 				if (data_selector(data1[acc_num], loc[acc_num], tag1_selected)) {
 					result_loc[parseInt(i,10)] = [data2[acc_num][parameter1] / data1[acc_num][parameter1] - 1, prop_info_obj.Latitude, prop_info_obj.Longitude, acc_num];
 					//here is where you can change the output data formula
@@ -219,13 +219,13 @@ let data_selector = function(data_point, geo_data, selected_tag) {
 	// essentially this will return if any criteria is not met
 	// hopefully will increase the efficiency than simple if else
 	switch (true) {
-		case parseInt(data_point[parameter1],10) < parseInt(parameter1_lower_bound.value,10):
+		case parseInt(data_point[parameter1.toString()],10) < parseInt(parameter1_lower_bound.value,10):
 			return 0;
-		case parseInt(data_point[parameter1],10) > parseInt(parameter1_upper_bound.value,10):
+		case parseInt(data_point[parameter1.toString()],10) > parseInt(parameter1_upper_bound.value,10):
 			return 0;
-		case parseInt(data_point[parameter2],10) < parseInt(parameter2_lower_bound.value,10):
+		case parseInt(data_point[parameter2.toString()],10) < parseInt(parameter2_lower_bound.value,10):
 			return 0;
-		case parseInt(data_point[parameter2],10) > parseInt(parameter2_upper_bound.value,10):
+		case parseInt(data_point[parameter2.toString()],10) > parseInt(parameter2_upper_bound.value,10):
 			return 0;
 		case true:
 			for (tag_count = 0; tag_count < selected_tag.length; tag_count++) {
@@ -384,6 +384,6 @@ let user_plot = function() {
 //prepare the action needed and send it to plot
 let execute_plot = function() {
 	data_points.clearLayers();
-	let marker_loc = getPoints(get_selected_options("data 1")[0], get_selected_options("data 2")[0], window[input_geo_file_prefix]);
+	let marker_loc = getPoints(get_selected_options("data 1")[0], get_selected_options("data 2")[0], window[input_geo_file_prefix.toString()]);
 	return plot_points(marker_loc, get_selected_options("data 2")[0]);
 }
