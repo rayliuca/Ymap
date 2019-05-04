@@ -189,16 +189,16 @@ let getPoints = function(str1, str2, loc) {
 			if (str2 === "None") {
 				// first case where the second data set is not selected
 				let data1 = window[input_data_file_pefix.toString() + str1.toString()];
-				if (data_selector(data1[acc_num], loc[acc_num], tag1_selected)) {
-					result_loc[parseInt(i,10)] = [data1[acc_num][parameter1], prop_info_obj.Latitude, prop_info_obj.Longitude, acc_num];
+				if (data_selector(data1[parseInt(acc_num,10)], loc[parseInt(acc_num,10)], tag1_selected)) {
+					result_loc[parseInt(i,10)] = [data1[parseInt(acc_num,10)][parameter1.toString()], prop_info_obj.Latitude, prop_info_obj.Longitude, acc_num];
 					//here is where you can change the output data formula
 				}
 			} else {
 				// when the second data set is selected
 				let data1 = window[input_data_file_pefix.toString() + str1.toString()];
 				let data2 = window[input_data_file_pefix.toString() + str2.toString()];
-				if (data_selector(data1[acc_num], loc[acc_num], tag1_selected)) {
-					result_loc[parseInt(i,10)] = [data2[acc_num][parameter1] / data1[acc_num][parameter1] - 1, prop_info_obj.Latitude, prop_info_obj.Longitude, acc_num];
+				if (data_selector(data1[parseInt(acc_num,10)], loc[parseInt(acc_num,10)], tag1_selected)) {
+					result_loc[parseInt(i,10)] = [data2[parseInt(acc_num,10)][parameter1.toString()] / data1[parseInt(acc_num,10)][parameter1.toString()] - 1, prop_info_obj.Latitude, prop_info_obj.Longitude, acc_num];
 					//here is where you can change the output data formula
 				}
 
@@ -229,8 +229,8 @@ let data_selector = function(data_point, geo_data, selected_tag) {
 			return 0;
 		case true:
 			for (tag_count = 0; tag_count < selected_tag.length; tag_count++) {
-				let current_tag = data_point[tag1];
-				if (current_tag === selected_tag[tag_count]) {
+				let current_tag = data_point[tag1.toString()];
+				if (current_tag === selected_tag[tag_count.toString()]) {
 					return 1;
 				}
 
@@ -253,9 +253,9 @@ let get_color = function(val, min_val, max_val) {
 			color_x = val - parseInt(val / (100 / RGB_steps), 10) * 100 / RGB_steps;
 			//the RGB_gradient_function is essentially a linear interpolation between two rgb settings
 			//RGB_gradient_function is nested arrays in the form of [[R=[slope, intercept],G=....],[R=....]...]
-			r = RGB_gradient_function[color_index][0][0] * (val) / RGB_steps / 100 + RGB_gradient_function[color_index][0][1];
-			g = RGB_gradient_function[color_index][1][0] * (val) / RGB_steps / 100 + RGB_gradient_function[color_index][1][1];
-			b = RGB_gradient_function[color_index][2][0] * (val) / RGB_steps / 100 + RGB_gradient_function[color_index][2][1];
+			r = RGB_gradient_function[parseInt(color_index,10)][0][0] * (val) / RGB_steps / 100 + RGB_gradient_function[parseInt(color_index,10)][0][1];
+			g = RGB_gradient_function[parseInt(color_index,10)][1][0] * (val) / RGB_steps / 100 + RGB_gradient_function[parseInt(color_index,10)][1][1];
+			b = RGB_gradient_function[parseInt(color_index,10)][2][0] * (val) / RGB_steps / 100 + RGB_gradient_function[parseInt(color_index,10)][2][1];
 			break;
 			
 		//if val is absolutely outside of the bounds  
@@ -269,7 +269,7 @@ let get_color = function(val, min_val, max_val) {
 			break;
 
 		case (val === 100):
-			[r, g, b] = RGB_gradient[RGB_steps];
+			[r, g, b] = RGB_gradient[parseInt(RGB_steps,10)];
 			break;
 	}
 
