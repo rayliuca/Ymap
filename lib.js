@@ -1,11 +1,35 @@
 
+// controls the throbber
+let throbber = function(on) {
+	if (on === 0) {
+		document.getElementById("overlay").style.display = "none";
+	} else {
+		document.getElementById("overlay").style.display = "block";
+
+	}
+
+}
+
+// we need to keep track of the file loading process
+let queue_length = 0;
+let loading_queue = function(num = 1) {
+	//if this function is called, change the queue_length
+	queue_length = queue_length + num;
+	throbber(1);
+	
+	// turn off the throbber once there is no more queue
+	if (num < 0 && queue_length === 0) {
+		throbber(0);
+	}
+}
+
 // this will setup select menus 
 let setup_select = function(select_menu_id, options_array) {
 	
 	let menu = document.getElementById(select_menu_id);
 	// if the input options_array is not actually an array but an 
 	// object, we will set it up as an optgroup list
-	if (Object.prototype.toString.call(options_array) == "[object Object]") {
+	if (Object.prototype.toString.call(options_array) === "[object Object]") {
 		// the object keys will be our optgroup name so we need to get them
 		let keys = Object.keys(options_array);
 		let key_count = keys.length;
@@ -64,81 +88,6 @@ let setup_select = function(select_menu_id, options_array) {
 
 }
 
-// this is for us to get the selected options in a menu easier
-// give an id, it will return selceted options in an array.
-let get_selected_options = function(menu_id) {
-	let selected = document.getElementById(menu_id).selectedOptions;
-	let value_array = [];
-	for (let i = 0; i < selected.length; i++) {
-		value_array[parseInt(i,10)] = selected[parseInt(i,10)].value;
-	}
-
-	return value_array
-}
-
-// load selected files and the geo file
-let user_load = function() {
-	throbber(1);
-	let available_data = get_selected_options("load data list");
-	setup_select("data 1", available_data);
-	setup_select("data 2", available_data);
-	for (let year_count = 0; year_count < available_data.length; year_count++) {
-		get_file(window[input_data_catalog], input_data_file_pefix + available_data[year_count], input_data_folder);
-	}
-
-	if (typeof(window[input_geo_file_prefix]) == "undefined") {
-		// the geo location of the accounts
-		get_file(window[input_geo_catalog], input_geo_file_prefix, input_geo_folder);
-
-	}
-
-}
-
-// controls the throbber
-let throbber = function(on) {
-	if (on == 0) {
-		document.getElementById("overlay").style.display = "none";
-	} else {
-		document.getElementById("overlay").style.display = "block";
-
-	}
-
-}
-
-// we need to keep track of the file loading process
-let queue_length = 0;
-let loading_queue = function(num = 1) {
-	//if this function is called, change the queue_length
-	queue_length = queue_length + num;
-	throbber(1);
-	
-	// turn off the throbber once there is no more queue
-	if (num < 0 && queue_length == 0) {
-		throbber(0);
-	}
-}
-
-
-// we need a function to get all the data segments   
-let get_file = function(obj_list, str, path_to_data) {
-
-	if (typeof obj_list[str] !== "undefined" && obj_list[str] !== null) {
-		// get the small segments of the data
-		require([path_to_data + "\\" + str]);
-		for (let i = 1; i <= obj_list[str]; i++) {
-			loading_queue(1)
-			require([path_to_data + "\\" + str + "_" + String(i)], function() {
-				loading_queue(-1);
-				// call the fuse_data function to piece segments together
-				fuse_data(obj_list, str);
-			});
-
-		}
-
-	}
-	return
-}
-
 // this function is to fuse small segments of data together
 let fuse_data = function(obj_list, str) {
 	for (let j = 1; j <= obj_list[str]; j++) {
@@ -167,6 +116,62 @@ let fuse_data = function(obj_list, str) {
 
 }
 
+// we need a function to get all the data segments   
+let get_file = function(obj_list, str, path_to_data) {
+
+	if (typeof obj_list[str] !== "undefined" && obj_list[str] !== null) {
+		// get the small segments of the data
+		require([path_to_data + "\\" + str]);
+		for (let i = 1; i <= obj_list[str]; i++) {
+			loading_queue(1)
+			require([path_to_data + "\\" + str + "_" + String(i)], function() {
+				loading_queue(-1);
+				// call the fuse_data function to piece segments together
+				fuse_data(obj_list, str);
+			});
+
+		}
+
+	}
+	return
+}
+
+
+
+// this is for us to get the selected options in a menu easier
+// give an id, it will return selceted options in an array.
+let get_selected_options = function(menu_id) {
+	let selected = document.getElementById(menu_id).selectedOptions;
+	let value_array = [];
+	for (let i = 0; i < selected.length; i++) {
+		value_array[parseInt(i,10)] = selected[parseInt(i,10)].value;
+	}
+
+	return value_array
+}
+
+// load selected files and the geo file
+let user_load = function() {
+	throbber(1);
+	let available_data = get_selected_options("load data list");
+	setup_select("data 1", available_data);
+	setup_select("data 2", available_data);
+	for (let year_count = 0; year_count < available_data.length; year_count++) {
+		get_file(window[input_data_catalog], input_data_file_pefix + available_data[year_count], input_data_folder);
+	}
+
+	if (typeof(window[input_geo_file_prefix]) === "undefined") {
+		// the geo location of the accounts
+		get_file(window[input_geo_catalog], input_geo_file_prefix, input_geo_folder);
+
+	}
+
+}
+
+
+
+
+
 // get points to plot base on some requirements
 // not really useful right now, but it will be used to
 // filter the data points when the UI is implemented 
@@ -181,7 +186,7 @@ let getPoints = function(str1, str2, loc) {
 			let acc_num = window[input_id_catalog][parseInt(i,10)];
 			let prop_info_obj = loc[acc_num];
 			
-			if (str2 == "None") {
+			if (str2 === "None") {
 				// first case where the second data set is not selected
 				let data1 = window[input_data_file_pefix + str1];
 				if (data_selector(data1[acc_num], loc[acc_num], tag1_selected)) {
@@ -225,7 +230,7 @@ let data_selector = function(data_point, geo_data, selected_tag) {
 		case true:
 			for (tag_count = 0; tag_count < selected_tag.length; tag_count++) {
 				let current_tag = data_point[tag1];
-				if (current_tag == selected_tag[tag_count]) {
+				if (current_tag === selected_tag[tag_count]) {
 					return 1;
 				}
 
@@ -259,11 +264,11 @@ let get_color = function(val, min_val, max_val) {
 			break;
 			
 		//then we have the two boundary conditions
-		case (val == 0):
+		case (val === 0):
 			[r, g, b] = RGB_gradient[0];
 			break;
 
-		case (val == 100):
+		case (val === 100):
 			[r, g, b] = RGB_gradient[RGB_steps];
 			break;
 	}
@@ -305,8 +310,8 @@ let make_legend = function(min, max) {
 		for (let i = 0; i < grades.length; i++) {
 			let prefix="";
 			let suffix="<br>";
-			if (typeof(grades[i-1]) == "undefined") prefix="< ";
-			else if (typeof(grades[i+1]) == "undefined") prefix=" >";
+			if (typeof(grades[i-1]) === "undefined") prefix="< ";
+			else if (typeof(grades[i+1]) === "undefined") prefix=" >";
 			else suffix=" &ndash; " + grades[i + 1]+ "<br>";
 			
 			div.innerHTML +=
@@ -337,7 +342,7 @@ function plot_points(arr, parameter2_str) {
 	for (let i = 0; i < arr_length; i++) {
 		if (typeof arr[parseInt(i,10)] !== "undefined" && arr[parseInt(i,10)] !== null) {
 			//make the pop up texts
-			if (parameter2_str == "None") {
+			if (parameter2_str === "None") {
 				text = "<p> "+parameter1+": " + arr[parseInt(i,10)][0].toString() + "</p> <p>"+id_key+": " + arr[parseInt(i,10)][3].toString() + "</p>";
 
 			} else {
