@@ -249,8 +249,8 @@ let get_color = function(val, min_val, max_val) {
 	switch (true) {
 		//if val is absolutely inside of the bounds  
 		case (val > 0 && val < 100):
-			color_index = parseInt(val / 100 * (RGB_steps), 10);
-			color_x = val - parseInt(val / (100 / RGB_steps), 10) * 100 / RGB_steps;
+			let color_index = parseInt(val / 100 * (RGB_steps), 10);
+			let color_x = val - parseInt(val / (100 / RGB_steps), 10) * 100 / RGB_steps;
 			//the RGB_gradient_function is essentially a linear interpolation between two rgb settings
 			//RGB_gradient_function is nested arrays in the form of [[R=[slope, intercept],G=....],[R=....]...]
 			r = RGB_gradient_function[parseInt(color_index,10)][0][0] * (val) / RGB_steps / 100 + RGB_gradient_function[parseInt(color_index,10)][0][1];
@@ -282,23 +282,23 @@ let get_color = function(val, min_val, max_val) {
 };
 
 // this will generate the legend on the map
-let make_legend = function(min, max) {
+const make_legend = function(min, max) {
 	min = parseInt(min, 10);
 	max = parseInt(max, 10);
 	
 	legend.onAdd = function(map) {
-		let max_min_range = max - min;
+		const max_min_range = max - min;
 		let div = L.DomUtil.create("div", "info legend");
 		//make the segments round to 1k if values large enough
 		if (max > 100000){ round_stop = 1000;}
-		else {round_stop = 1;}
-		let legend_step = [];
+		else {var round_stop = 1;}
+		const legend_step = [];
 		
 		//generate the vaules to generate legends
 		for (let i = 0; i < RGB_steps; i++) {
 			legend_step.push(Math.round((max_min_range / (RGB_steps + 1) * (i + 1) + min) / round_stop) * round_stop);
 		}
-		let grades = legend_step;
+		grades = legend_step;
 		//add the min and max at beginning and the end
 		grades.unshift(min);
 		grades.push(max);
@@ -308,15 +308,15 @@ let make_legend = function(min, max) {
 		else {grades.unshift(min * 2);}
 			// loop through our density intervals and generate a label with a colored square for each interval
 		for (let i = 0; i < grades.length; i++) {
-			let prefix="";
-			let suffix="<br>";
-			if (typeof(grades[i-1]) === "undefined") {prefix="< ";}
-			else if (typeof(grades[i+1]) === "undefined") {prefix=" >";}
-			else {suffix=" &ndash; " + grades[i + 1]+ "<br>";}
-			
+			let prefix='';
+			let suffix='<br>';
+			if (typeof(grades[i-1]) === "undefined") {prefix='< ';}
+			else if (typeof(grades[i+1]) === "undefined") {prefix=' >';}
+			else {suffix=' &ndash; ' + grades[i + 1]+ '<br>';}
 			div.innerHTML +=
-				"<i style=background:" + get_color(grades[parseInt(i,10)] + 1, min, max) + "></i> " +
-				prefix+grades[parseInt(i,10)] + suffix;
+                    '<i style="background:' + get_color(grades[i] + 1, min, max) + '"></i> ' +
+                    prefix+grades[i] + suffix;
+				
 		}
 
 		return div;
@@ -331,9 +331,9 @@ function plot_points(arr, parameter2_str) {
 	let arr_length = arr.length;
 	let marker_plotted = 0;
 	try {
-		var colour_array = parameter1_colour_slider.noUiSlider.get();
+		colour_array = parameter1_colour_slider.noUiSlider.get();
 	} catch (err) {
-		var colour_array = parameter1_change_colour_slider.noUiSlider.get();
+		colour_array = parameter1_change_colour_slider.noUiSlider.get();
 		//since the values are in %, we need to get rid of that symbol
 		colour_array[0] = colour_array[0].slice(0, -1);
 		colour_array[1] = colour_array[1].slice(0, -1);

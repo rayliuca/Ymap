@@ -136,7 +136,7 @@ let update_slider_range = function(slider, handle, value) {
 /////////////////////////////////////////////////
 
 //the setup for the first filter. In the origal Ymap, this will be the assessment value 
-let parameter1_slider = document.getElementById("parameter1 slider");
+const parameter1_slider = document.getElementById("parameter1 slider");
 
 //setup it is a noUiSlider  
 noUiSlider.create(parameter1_slider, {
@@ -155,12 +155,12 @@ parameter1_upper_bound = document.getElementById("parameter1 upper bound");
 //listen to changes
 parameter1_lower_bound.addEventListener("change", function() {
 	update_slider_range(parameter1_colour_slider, "low", this.value - 0);
-	update_slider(parameter1_value_slider, "low", this.value - 0);
+	update_slider(parameter1_slider, "low", this.value - 0);
 });
 
 parameter1_upper_bound.addEventListener("change", function() {
 	update_slider_range(parameter1_colour_slider, "high", this.value - 0);
-	update_slider(parameter1_value_slider, "high", this.value - 0);
+	update_slider(parameter1_slider, "high", this.value - 0);
 });
 
 //listen to changes on the slider
@@ -182,7 +182,7 @@ parameter1_slider.noUiSlider.on("update", function(values, handle) {
 
 // this will be the second slider, which is the lot size, originally
 // same details as parameter1
-let parameter2_slider = document.getElementById("parameter2 slider");
+const parameter2_slider = document.getElementById("parameter2 slider");
 
 noUiSlider.create(parameter2_slider, {
 	start: default_slider2_range,
@@ -198,12 +198,12 @@ parameter2_lower_bound = document.getElementById("parameter2 lower bound");
 parameter2_upper_bound = document.getElementById("parameter2 upper bound");
 
 parameter2_lower_bound.addEventListener("change", function() {
-	update_slider(parameter2_size_slider, "low", this.value - 0);
+	update_slider(parameter2_slider, "low", this.value - 0);
 
 });
 
 parameter2_upper_bound.addEventListener("change", function() {
-	update_slider(parameter2_size_slider, "high", this.value - 0);
+	update_slider(parameter2_slider, "high", this.value - 0);
 });
 
 parameter2_slider.noUiSlider.on("update", function(values, handle) {
