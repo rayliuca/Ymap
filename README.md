@@ -1,4 +1,7 @@
 # Ymap
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/90623332489b43f18dbe5cc23a2f473c)](https://app.codacy.com/app/rayliuca/Ymap?utm_source=github.com&utm_medium=referral&utm_content=rayliuca/Ymap&utm_campaign=Badge_Grade_Dashboard)
+
 ### Open-Source, Accessible, and Interactive 
 
 Try it out online at [ymap.rayliu.ca](https://ymap.rayliu.ca/)!
