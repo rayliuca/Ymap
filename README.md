@@ -28,7 +28,7 @@ The default example is to study the property assessment trend in Edmonton, Canad
 
 Try it out online at [ymap.rayliu.ca](https://ymap.rayliu.ca/)
 
-<kbd>![Ymap pre-view](https://raw.githubusercontent.com/rayliuca/Ymap/master/doc/example_edmonton.png)</kbd>
+<kbd>![Ymap pre-view]( https://raw.githubusercontent.com/rayliuca/Ymap/master/doc/example_edmonton.png) </kbd>
 
 ### Dependency
 
@@ -53,7 +53,7 @@ To plot your own data, there are some things you will need to do
 
 
 ### Structure
-For necessary file and data structure, see [here]( https://github.com/rayliuca/Ymap/blob/master/doc/structure.md)
+For the necessary file and data structures, see [here]( https://github.com/rayliuca/Ymap/blob/master/doc/structure.md)
 
 
 ### Todos
