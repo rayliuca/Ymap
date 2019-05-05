@@ -22,7 +22,7 @@ data_2.addEventListener("change", function() {
 			//if there is a output value type change, destroy the old slider
 			window.parameter1_colour_slider.noUiSlider.destroy();
 			window.parameter1_colour_slider = [];
-		} catch (error) {};
+		} catch (error) {}
 		if (typeof(window.parameter1_change_colour_slider) === "undefined" || typeof(window.parameter1_change_colour_slider.noUiSlider) === "undefined") {
 			//create the proper slider with proper parameters
 			window.parameter1_change_colour_slider = document.getElementById("colour slider");
@@ -52,7 +52,7 @@ data_2.addEventListener("change", function() {
 		try {
 			window.parameter1_change_colour_slider.noUiSlider.destroy();
 			window.parameter1_change_colour_slider = [];
-		} catch (err) {};
+		} catch (err) {}
 		if (typeof(window.parameter1_colour_slider) === "undefined" || typeof(window.parameter1_colour_slider.noUiSlider) === "undefined") {
 			window.parameter1_colour_slider = document.getElementById("colour slider");
 			noUiSlider.create(parameter1_colour_slider, {
@@ -130,7 +130,7 @@ let update_slider_range = function(slider, handle, value) {
 					"max": value
 				}
 			});
-		};
+		}
 	}
 }
 /////////////////////////////////////////////////
@@ -154,19 +154,19 @@ parameter1_upper_bound = document.getElementById("parameter1 upper bound");
 
 //listen to changes
 parameter1_lower_bound.addEventListener("change", function() {
-	update_slider_range(parameter1_colour_slider, "low", this.value - 0)
-	update_slider(parameter1_value_slider, "low", this.value - 0)
+	update_slider_range(parameter1_colour_slider, "low", this.value - 0);
+	update_slider(parameter1_value_slider, "low", this.value - 0);
 });
 
 parameter1_upper_bound.addEventListener("change", function() {
-	update_slider_range(parameter1_colour_slider, "high", this.value - 0)
-	update_slider(parameter1_value_slider, "high", this.value - 0)
+	update_slider_range(parameter1_colour_slider, "high", this.value - 0);
+	update_slider(parameter1_value_slider, "high", this.value - 0);
 });
 
 //listen to changes on the slider
 parameter1_slider.noUiSlider.on("update", function(values, handle) {
 
-	let value = values[handle];
+	let value = values[parseInt(handle,10)];
 
 	if (!handle) {
 		parameter1_lower_bound.value = value;
@@ -198,12 +198,12 @@ parameter2_lower_bound = document.getElementById("parameter2 lower bound");
 parameter2_upper_bound = document.getElementById("parameter2 upper bound");
 
 parameter2_lower_bound.addEventListener("change", function() {
-	update_slider(parameter2_size_slider, "low", this.value - 0)
+	update_slider(parameter2_size_slider, "low", this.value - 0);
 
 });
 
 parameter2_upper_bound.addEventListener("change", function() {
-	update_slider(parameter2_size_slider, "high", this.value - 0)
+	update_slider(parameter2_size_slider, "high", this.value - 0);
 });
 
 parameter2_slider.noUiSlider.on("update", function(values, handle) {
@@ -263,7 +263,7 @@ L.tileLayer("https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png", {
 	id: "OpenStreetMap.Mapnik"
 }).addTo(mymap);
 // set a layer group so the points can be easily removed
-data_points = L.layerGroup().addTo(mymap)
+data_points = L.layerGroup().addTo(mymap);
 
 // setup the legend layer
 let legend = L.control({
@@ -279,9 +279,9 @@ RGB_gradient_function = [];
 RGB_steps = RGB_gradient.length - 1;
 
 for (let i = 0; i < RGB_steps; i++) {
-	RGB_gradient_function[i] = []
+	RGB_gradient_function[i] = [];
 	for (let j = 0; j < 3; j++) {
-		RGB_gradient_function[i].push([(RGB_gradient[i + 1][j] - RGB_gradient[i][j]) * RGB_steps, RGB_gradient[i][j]])
+		RGB_gradient_function[i].push([(RGB_gradient[parseInt(i + 1,10)][parseInt(j,10)] - RGB_gradient[parseInt(i,10)][parseInt(j,10)]) * RGB_steps, RGB_gradient[parseInt(i,10)][parseInt(j,10)]]);
 	}
 
 }

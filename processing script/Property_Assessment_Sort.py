@@ -38,7 +38,7 @@ for x in reader:
     output_files[current_year].write(str(acc_num)+':')
     json.dump(x, output_files[current_year])
     output_files[current_year].write(', \n')
-    file_line_tractker[current_year] = file_line_tractker[current_year] +1  
+    file_line_tractker[current_year] = file_line_tractker[current_year] +1
     if file_line_tractker[current_year]%max_line_per_file ==0 :
         output_files[current_year].write('}')
         output_files[current_year].close()
@@ -58,6 +58,3 @@ for i in range(start_year,end_year+1):
 data_list.write('}')
 data_list.close()
 
-
-    
-    

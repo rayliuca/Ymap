@@ -36,14 +36,14 @@ for x in reader:
         del x[k]
     
     acc_num=int(x["Account Number"])
-    output_files.write(str(acc_num)+':')            
+    output_files.write(str(acc_num)+':')
     json.dump(x, output_files)
     output_files.write(', \n')
     
     account_list.write(str(acc_num)+', ')
     
     
-    file_line_tractker = file_line_tractker +1  
+    file_line_tractker = file_line_tractker +1
     if file_line_tractker%max_line_per_file ==0 :
         output_files.write('}')
         output_files.close()
@@ -66,7 +66,3 @@ data_list.close()
 
 account_list.write("]")
 account_list.close()
-
-
-    
-    

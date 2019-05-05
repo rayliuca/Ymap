@@ -59,7 +59,7 @@ let RGB_gradient = [
 	[206, 149, 43],
 	[237, 89, 75],
 	[174, 100, 214],
-]
+];
 
 //If you wish, the option for materializeCSS can be set here
 let materialize_options="";

@@ -33,7 +33,7 @@ let setup_select = function(select_menu_id, options_array) {
 		// the object keys will be our optgroup name so we need to get them
 		let keys = Object.keys(options_array);
 		let key_count = keys.length;
-		let optgroup_array = []
+		let optgroup_array = [];
 		//extract the array in each object
 		for (let i = 0; i < key_count; i++) {
 			optgroup_array[parseInt(i,10)] = document.createElement("optgroup");
@@ -48,7 +48,7 @@ let setup_select = function(select_menu_id, options_array) {
 				options[parseInt(j,10)].id = optgroup_options[parseInt(j,10)];
 				options[parseInt(j,10)].text = optgroup_options[parseInt(j,10)];
 				options[parseInt(j,10)].value = optgroup_options[parseInt(j,10)];
-				optgroup_array[parseInt(i)].appendChild(options[parseInt(j,10)]);
+				optgroup_array[parseInt(i,10)].appendChild(options[parseInt(j,10)]);
 
 			}
 			// add it to the menu
@@ -69,7 +69,7 @@ let setup_select = function(select_menu_id, options_array) {
 		//check to see if there are options that are not supposed to be here
 		let current_options = menu.options;
 		for (let i = current_options.length - 1; i >= 0; i--) {
-			if (current_options[parseInt(i,10)].value !== "None") menu.remove(i);
+			if (current_options[parseInt(i,10)].value !== "None"){ menu.remove(i);}
 		}
 	} catch (error) {
 		// no action expected
@@ -123,7 +123,7 @@ let get_file = function(obj_list, str, path_to_data) {
 		// get the small segments of the data
 		require([path_to_data + "\\" + str]);
 		for (let i = 1; i <= obj_list[str.toString()]; i++) {
-			loading_queue(1)
+			loading_queue(1);
 			require([path_to_data + "\\" + str + "_" + String(i)], function() {
 				loading_queue(-1);
 				// call the fuse_data function to piece segments together
@@ -133,7 +133,7 @@ let get_file = function(obj_list, str, path_to_data) {
 		}
 
 	}
-	return
+	return;
 }
 
 
@@ -147,7 +147,7 @@ let get_selected_options = function(menu_id) {
 		value_array[parseInt(i,10)] = selected[parseInt(i,10)].value;
 	}
 
-	return value_array
+	return value_array;
 }
 
 // load selected files and the geo file
@@ -165,49 +165,6 @@ let user_load = function() {
 		get_file(window[input_geo_catalog.toString()], input_geo_file_prefix, input_geo_folder);
 
 	}
-
-}
-
-
-
-
-
-// get points to plot base on some requirements
-// not really useful right now, but it will be used to
-// filter the data points when the UI is implemented 
-let getPoints = function(str1, str2, loc) {
-
-	let result_loc = [];
-	let arr_length = window[input_id_catalog.toString()].length;
-	let tag1_selected=get_selected_options("tag1");
-	for (let i = 0; i < arr_length; i++) {
-		if (i > arr_length) break;
-		try {
-			let acc_num = window[input_id_catalog.toString()][parseInt(i,10)];
-			let prop_info_obj = loc[acc_num];
-			
-			if (str2 === "None") {
-				// first case where the second data set is not selected
-				let data1 = window[input_data_file_pefix.toString() + str1.toString()];
-				if (data_selector(data1[parseInt(acc_num,10)], loc[parseInt(acc_num,10)], tag1_selected)) {
-					result_loc[parseInt(i,10)] = [data1[parseInt(acc_num,10)][parameter1.toString()], prop_info_obj.Latitude, prop_info_obj.Longitude, acc_num];
-					//here is where you can change the output data formula
-				}
-			} else {
-				// when the second data set is selected
-				let data1 = window[input_data_file_pefix.toString() + str1.toString()];
-				let data2 = window[input_data_file_pefix.toString() + str2.toString()];
-				if (data_selector(data1[parseInt(acc_num,10)], loc[parseInt(acc_num,10)], tag1_selected)) {
-					result_loc[parseInt(i,10)] = [data2[parseInt(acc_num,10)][parameter1.toString()] / data1[parseInt(acc_num,10)][parameter1.toString()] - 1, prop_info_obj.Latitude, prop_info_obj.Longitude, acc_num];
-					//here is where you can change the output data formula
-				}
-
-			}
-		} catch (err) {}
-
-	}
-
-	return result_loc;
 
 }
 
@@ -242,10 +199,53 @@ let data_selector = function(data_point, geo_data, selected_tag) {
 	return 0;
 }
 
+
+
+// get points to plot base on some requirements
+// not really useful right now, but it will be used to
+// filter the data points when the UI is implemented 
+let getPoints = function(str1, str2, loc) {
+
+	let result_loc = [];
+	let arr_length = window[input_id_catalog.toString()].length;
+	let tag1_selected=get_selected_options("tag1");
+	for (let i = 0; i < arr_length; i++) {
+		if (i > arr_length) break;
+		try {
+			let acc_num = window[input_id_catalog.toString()][parseInt(i,10)];
+			let prop_info_obj = loc[parseInt(acc_num,10]];
+			
+			if (str2 === "None") {
+				// first case where the second data set is not selected
+				let data1 = window[input_data_file_pefix.toString() + str1.toString()];
+				if (data_selector(data1[parseInt(acc_num,10)], loc[parseInt(acc_num,10)], tag1_selected)) {
+					result_loc[parseInt(i,10)] = [data1[parseInt(acc_num,10)][parameter1.toString()], prop_info_obj.Latitude, prop_info_obj.Longitude, acc_num];
+					//here is where you can change the output data formula
+				}
+			} else {
+				// when the second data set is selected
+				let data1 = window[input_data_file_pefix.toString() + str1.toString()];
+				let data2 = window[input_data_file_pefix.toString() + str2.toString()];
+				if (data_selector(data1[parseInt(acc_num,10)], loc[parseInt(acc_num,10)], tag1_selected)) {
+					result_loc[parseInt(i,10)] = [data2[parseInt(acc_num,10)][parameter1.toString()] / data1[parseInt(acc_num,10)][parameter1.toString()] - 1, prop_info_obj.Latitude, prop_info_obj.Longitude, acc_num];
+					//here is where you can change the output data formula
+				}
+
+			}
+		} catch (err) {}
+
+	}
+
+	return result_loc;
+
+}
+
+
+
 // get the RGB color to plot on the border of the circle markers
 let get_color = function(val, min_val, max_val) {
 	//re adjust the val to a scale of 100 between min_val and max_val 
-	val = (val - min_val) / (max_val - min_val) * 100
+	val = (val - min_val) / (max_val - min_val) * 100;
 	switch (true) {
 		//if val is absolutely inside of the bounds  
 		case (val > 0 && val < 100):
@@ -261,7 +261,7 @@ let get_color = function(val, min_val, max_val) {
 		//if val is absolutely outside of the bounds  
 		case (val < 0 || val > 100):
 			return "rgb(175, 175, 175)";
-			break;
+
 			
 		//then we have the two boundary conditions
 		case (val === 0):
@@ -276,7 +276,7 @@ let get_color = function(val, min_val, max_val) {
 	try {
 		return "rgb(" + Math.round(r) + "," + Math.round(g) + "," + Math.round(b) + ")";
 	} catch (err) {
-		console.log(val)
+		console.log(val);
 	}
 
 }
@@ -290,8 +290,8 @@ let make_legend = function(min, max) {
 		let max_min_range = max - min;
 		let div = L.DomUtil.create("div", "info legend");
 		//make the segments round to 1k if values large enough
-		if (max > 100000) round_stop = 1000;
-		else round_stop = 1;
+		if (max > 100000){ round_stop = 1000;}
+		else {round_stop = 1;}
 		let legend_step = [];
 		
 		//generate the vaules to generate legends
@@ -304,15 +304,15 @@ let make_legend = function(min, max) {
 		grades.push(max);
 
 		let labels = [];
-		if (min > 0) grades.unshift(0);
-		else grades.unshift(min * 2)
+		if (min > 0) {grades.unshift(0);}
+		else {grades.unshift(min * 2);}
 			// loop through our density intervals and generate a label with a colored square for each interval
 		for (let i = 0; i < grades.length; i++) {
 			let prefix="";
 			let suffix="<br>";
-			if (typeof(grades[i-1]) === "undefined") prefix="< ";
-			else if (typeof(grades[i+1]) === "undefined") prefix=" >";
-			else suffix=" &ndash; " + grades[i + 1]+ "<br>";
+			if (typeof(grades[i-1]) === "undefined") {prefix="< ";}
+			else if (typeof(grades[i+1]) === "undefined") {prefix=" >";}
+			else {suffix=" &ndash; " + grades[i + 1]+ "<br>";}
 			
 			div.innerHTML +=
 				"<i style=background:" + get_color(grades[parseInt(i,10)] + 1, min, max) + "></i> " +
@@ -331,9 +331,9 @@ function plot_points(arr, parameter2_str) {
 	let arr_length = arr.length;
 	let marker_plotted = 0;
 	try {
-		let colour_array = parameter1_colour_slider.noUiSlider.get()
+		let colour_array = parameter1_colour_slider.noUiSlider.get();
 	} catch (err) {
-		colour_array = parameter1_change_colour_slider.noUiSlider.get()
+		colour_array = parameter1_change_colour_slider.noUiSlider.get();
 		//since the values are in %, we need to get rid of that symbol
 		colour_array[0] = colour_array[0].slice(0, -1);
 		colour_array[1] = colour_array[1].slice(0, -1);
@@ -352,7 +352,7 @@ function plot_points(arr, parameter2_str) {
 			}
 
 			//make the marker
-			marker = new L.circle([arr[parseInt(i,10)][1], arr[parseInt(i,10)][2]], {
+			Marker = new L.circle([arr[parseInt(i,10)][1], arr[parseInt(i,10)][2]], {
 					radius: c_radius,
 					color: (get_color(arr[parseInt(i,10)][0], colour_array[0], colour_array[1]))
 				})
@@ -363,9 +363,16 @@ function plot_points(arr, parameter2_str) {
 		}
 	}
 	make_legend(colour_array[0], colour_array[1]);
-	console.log(marker_plotted.toString() + " markers plotted");
+	//console.log(marker_plotted.toString() + " markers plotted");
 	return loading_queue(-1);
 
+}
+
+//prepare the action needed and send it to plot
+let execute_plot = function() {
+	data_points.clearLayers();
+	let marker_loc = getPoints(get_selected_options("data 1")[0], get_selected_options("data 2")[0], window[input_geo_file_prefix.toString()]);
+	return plot_points(marker_loc, get_selected_options("data 2")[0]);
 }
 
 //when the plot! botton pressed, this function will be called
@@ -379,11 +386,5 @@ let user_plot = function() {
 		return execute_plot();
 	}, 50);
 
-}
+};
 
-//prepare the action needed and send it to plot
-let execute_plot = function() {
-	data_points.clearLayers();
-	let marker_loc = getPoints(get_selected_options("data 1")[0], get_selected_options("data 2")[0], window[input_geo_file_prefix.toString()]);
-	return plot_points(marker_loc, get_selected_options("data 2")[0]);
-}
