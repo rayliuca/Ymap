@@ -28,9 +28,7 @@ The default example is to study the property assessment trend in Edmonton, Canad
 
 Try it out online at [ymap.rayliu.ca](https://ymap.rayliu.ca/)
 
-<kbd>
-![Ymap pre-view](https://raw.githubusercontent.com/rayliuca/Ymap/master/doc/example_edmonton.png)
-</kbd>
+<kbd>![Ymap pre-view](https://raw.githubusercontent.com/rayliuca/Ymap/master/doc/example_edmonton.png)</kbd>
 
 ### Dependency
 
