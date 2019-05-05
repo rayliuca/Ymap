@@ -312,9 +312,9 @@ const make_legend = function(min, max) {
 			let suffix='<br>';
 			if (typeof(grades[i-1]) === "undefined") {prefix='< ';}
 			else if (typeof(grades[i+1]) === "undefined") {prefix=' >';}
-			else {suffix=' &ndash; ' + grades[i + 1]+ '<br>';}
+			else {suffix=' &ndash; ' + grades[parseInt(i + 1,10)]+ '<br>';}
 			div.innerHTML +=
-                    '<i style="background:' + get_color(grades[i] + 1, min, max) + '"></i> ' +
+                    '<i style="background:' + get_color(grades[parseInt(i,10)] + 1, min, max) + '"></i> ' +
                     prefix+grades[i] + suffix;
 				
 		}
