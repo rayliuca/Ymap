@@ -8,7 +8,7 @@ let throbber = function(on) {
 
 	}
 
-}
+};
 
 // we need to keep track of the file loading process
 let queue_length = 0;
@@ -21,7 +21,7 @@ let loading_queue = function(num = 1) {
 	if (num < 0 && queue_length === 0) {
 		throbber(0);
 	}
-}
+};
 
 // this will setup select menus 
 let setup_select = function(select_menu_id, options_array) {
@@ -57,10 +57,10 @@ let setup_select = function(select_menu_id, options_array) {
 		}
 		
 		// relaod the menu so changes will show up
-		elems = document.querySelectorAll("select");
-		instances = M.FormSelect.init(elems, materialize_options);
+		let elems = document.querySelectorAll("select");
+		let instances = M.FormSelect.init(elems, materialize_options);
 
-		return
+		return;
 	}
 
 	//here we deal with the simple array situation 
@@ -86,14 +86,14 @@ let setup_select = function(select_menu_id, options_array) {
 	elems = document.querySelectorAll("select");
 	instances = M.FormSelect.init(elems, materialize_options);
 
-}
+};
 
 // this function is to fuse small segments of data together
 let fuse_data = function(obj_list, str) {
 	for (let j = 1; j <= obj_list[str.toString()]; j++) {
 		// try case is used since the data might not be required yet
 		// since we will be calling this function many times,
-		// it will fuse everythint eventually 
+		// it will fuse everything eventually
 		try {
 			// this try case is for array type of data
 			window[str.toString()] = window[str.toString()].concat(window[str.toString() + "_" + String(j)]);
@@ -114,7 +114,7 @@ let fuse_data = function(obj_list, str) {
 
 	}
 
-}
+};
 
 // we need a function to get all the data segments   
 let get_file = function(obj_list, str, path_to_data) {
@@ -133,13 +133,13 @@ let get_file = function(obj_list, str, path_to_data) {
 		}
 
 	}
-	return;
-}
+
+};
 
 
 
 // this is for us to get the selected options in a menu easier
-// give an id, it will return selceted options in an array.
+// give an id, it will return selected options in an array.
 let get_selected_options = function(menu_id) {
 	let selected = document.getElementById(menu_id).selectedOptions;
 	let value_array = [];
@@ -148,7 +148,7 @@ let get_selected_options = function(menu_id) {
 	}
 
 	return value_array;
-}
+};
 
 // load selected files and the geo file
 let user_load = function() {
@@ -166,7 +166,7 @@ let user_load = function() {
 
 	}
 
-}
+};
 
 // This will select data points. If it does not meet the criteria
 // this function will return 0. If it fits, it returns 1. 
@@ -197,7 +197,7 @@ let data_selector = function(data_point, geo_data, selected_tag) {
 	}
 
 	return 0;
-}
+};
 
 
 
@@ -210,7 +210,7 @@ let getPoints = function(str1, str2, loc) {
 	let arr_length = window[input_id_catalog.toString()].length;
 	let tag1_selected=get_selected_options("tag1");
 	for (let i = 0; i < arr_length; i++) {
-		if (i > arr_length) break;
+		if (i > arr_length) {break;}
 		try {
 			let acc_num = window[input_id_catalog.toString()][parseInt(i,10)];
 			let prop_info_obj = loc[parseInt(acc_num,10)];
@@ -238,7 +238,7 @@ let getPoints = function(str1, str2, loc) {
 
 	return result_loc;
 
-}
+};
 
 
 
@@ -279,7 +279,7 @@ let get_color = function(val, min_val, max_val) {
 		console.log(val);
 	}
 
-}
+};
 
 // this will generate the legend on the map
 let make_legend = function(min, max) {
@@ -323,7 +323,7 @@ let make_legend = function(min, max) {
 	};
 
 	legend.addTo(mymap);
-}
+};
 
 
 // plot points as circle markers on the leaflet map
@@ -331,9 +331,9 @@ function plot_points(arr, parameter2_str) {
 	let arr_length = arr.length;
 	let marker_plotted = 0;
 	try {
-		let colour_array = parameter1_colour_slider.noUiSlider.get();
+		var colour_array = parameter1_colour_slider.noUiSlider.get();
 	} catch (err) {
-		colour_array = parameter1_change_colour_slider.noUiSlider.get();
+		var colour_array = parameter1_change_colour_slider.noUiSlider.get();
 		//since the values are in %, we need to get rid of that symbol
 		colour_array[0] = colour_array[0].slice(0, -1);
 		colour_array[1] = colour_array[1].slice(0, -1);
@@ -373,7 +373,7 @@ let execute_plot = function() {
 	data_points.clearLayers();
 	let marker_loc = getPoints(get_selected_options("data 1")[0], get_selected_options("data 2")[0], window[input_geo_file_prefix.toString()]);
 	return plot_points(marker_loc, get_selected_options("data 2")[0]);
-}
+};
 
 //when the plot! botton pressed, this function will be called
 let user_plot = function() {
