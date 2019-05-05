@@ -120,7 +120,7 @@ let update_slider_range = function(slider, handle, value) {
 					"max": slider.noUiSlider.options.range.max
 				}
 			});
-		};
+		}
 	}
 	if (handle === "high") {
 		if (value > slider.noUiSlider.options.range.max) {
@@ -132,7 +132,7 @@ let update_slider_range = function(slider, handle, value) {
 			});
 		}
 	}
-}
+};
 /////////////////////////////////////////////////
 
 //the setup for the first filter. In the origal Ymap, this will be the assessment value 
@@ -279,9 +279,9 @@ RGB_gradient_function = [];
 RGB_steps = RGB_gradient.length - 1;
 
 for (let i = 0; i < RGB_steps; i++) {
-	RGB_gradient_function[i] = [];
+	RGB_gradient_function[parseInt(i,10)] = [];
 	for (let j = 0; j < 3; j++) {
-		RGB_gradient_function[i].push([(RGB_gradient[parseInt(i + 1,10)][parseInt(j,10)] - RGB_gradient[parseInt(i,10)][parseInt(j,10)]) * RGB_steps, RGB_gradient[parseInt(i,10)][parseInt(j,10)]]);
+		RGB_gradient_function[parseInt(i,10)].push([(RGB_gradient[parseInt(i + 1,10)][parseInt(j,10)] - RGB_gradient[parseInt(i,10)][parseInt(j,10)]) * RGB_steps, RGB_gradient[parseInt(i,10)][parseInt(j,10)]]);
 	}
 
 }
