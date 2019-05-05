@@ -213,7 +213,7 @@ let getPoints = function(str1, str2, loc) {
 		if (i > arr_length) break;
 		try {
 			let acc_num = window[input_id_catalog.toString()][parseInt(i,10)];
-			let prop_info_obj = loc[parseInt(acc_num,10]];
+			let prop_info_obj = loc[parseInt(acc_num,10)];
 			
 			if (str2 === "None") {
 				// first case where the second data set is not selected

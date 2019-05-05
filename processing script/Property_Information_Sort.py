@@ -60,7 +60,7 @@ data_list.write('prop_list={')
 data_list.write('\''+ output_file_name+'\' :' + str(math.floor(file_line_tractker/max_line_per_file)) + ',' )
 output_files.write('}')
 output_files.close()
-    
+
 data_list.write('}')
 data_list.close()
 

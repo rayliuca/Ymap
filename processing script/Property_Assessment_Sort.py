@@ -54,7 +54,7 @@ for i in range(start_year,end_year+1):
     data_list.write('\''+ output_prefix+str(i)+'\' :' + str(math.floor(file_line_tractker[i]/max_line_per_file)) + ',' )
     output_files[i].write('}')
     output_files[i].close()
-    
+
 data_list.write('}')
 data_list.close()
 

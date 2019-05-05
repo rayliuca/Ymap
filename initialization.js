@@ -109,7 +109,7 @@ let update_slider = function(slider, handle, value) {
 			slider.noUiSlider.set([null, value]);
 		}
 	}
-}
+};
 
 let update_slider_range = function(slider, handle, value) {
 	if (handle === "low") {
