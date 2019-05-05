@@ -315,7 +315,7 @@ const make_legend = function(min, max) {
 			else {suffix=' &ndash; ' + grades[parseInt(i + 1,10)]+ '<br>';}
 			div.innerHTML +=
                     '<i style="background:' + get_color(grades[parseInt(i,10)] + 1, min, max) + '"></i> ' +
-                    prefix+grades[i] + suffix;
+                    prefix+grades[parseInt(i,10)] + suffix;
 				
 		}
 
