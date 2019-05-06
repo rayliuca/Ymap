@@ -5,7 +5,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7440bc9c90c7466494e4268fe1d1c520)](https://www.codacy.com/app/rayliuca/Ymap?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rayliuca/Ymap&amp;utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/f7f25493fc388f34ebeb/maintainability)](https://codeclimate.com/github/rayliuca/Ymap/maintainability)
 
-Ymap is an open-sourced, accessible, and interactive tool to visualize geologic data. 
+Ymap is an open-sourced, accessible, and interactive tool to visualize geospatial data. 
 
 - Uses HTML and JavaScript
 - Tested with Chrome and FireFox
