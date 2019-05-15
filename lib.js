@@ -186,7 +186,14 @@ let data_selector = function(data_point, geo_data, selected_tag) {
 			return 0;
 		case true:
 			for (tag_count = 0; tag_count < selected_tag.length; tag_count++) {
-				let current_tag = data_point[tag1.toString()];
+				if (typeof(data_point[tag1.toString()]) !== "undefined"){ 
+				try {current_tag = data_point[tag1.toString()];}
+				catch (err) {}
+				}else{							
+					current_tag = geo_data[tag1.toString()];
+				}
+				
+				
 				if (current_tag === selected_tag[tag_count.toString()]) {
 					return 1;
 				}

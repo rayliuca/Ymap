@@ -37,7 +37,7 @@ let default_change_colour_range = [-10, 10];
 let change_colour_range = [-25, 25];
 
 //In the example, this is the list years of parameter1s that you can load 
-let time_option_list = ["2012", "2013", "2014", "2015", "2016", "2017", "2018"];
+let time_option_list = ["2012", "2013", "2014", "2015", "2016", "2017", "2018","2019"];
 
 //In the example, this is the zoning list
 let tag_list = {

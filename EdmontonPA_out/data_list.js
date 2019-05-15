@@ -1,1 +1,1 @@
-data_list={'year2010' :0,'year2011' :0,'year2012' :33,'year2013' :34,'year2014' :35,'year2015' :36,'year2016' :38,'year2017' :38,'year2018' :39,'year2019' :0,'year2020' :0,}
+data_list={'year2010' :0,'year2011' :0,'year2012' :33,'year2013' :34,'year2014' :35,'year2015' :36,'year2016' :38,'year2017' :38,'year2018' :39,'year2019' :39,'year2020' :0,}
