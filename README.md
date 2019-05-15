@@ -5,7 +5,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7440bc9c90c7466494e4268fe1d1c520)](https://www.codacy.com/app/rayliuca/Ymap?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rayliuca/Ymap&amp;utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/f7f25493fc388f34ebeb/maintainability)](https://codeclimate.com/github/rayliuca/Ymap/maintainability)
 
-Ymap is an open-sourced, accessible, and interactive tool to visualize geologic data. 
+Ymap is an open-sourced, accessible, and interactive tool to visualize geospatial data. 
 
 - Uses HTML and JavaScript
 - Tested with Chrome and FireFox
@@ -28,9 +28,7 @@ The default example is to study the property assessment trend in Edmonton, Canad
 
 Try it out online at [ymap.rayliu.ca](https://ymap.rayliu.ca/)
 
-<kbd>
-![Ymap pre-view](https://raw.githubusercontent.com/rayliuca/Ymap/master/doc/example_edmonton.png)
-</kbd>
+<kbd>![Ymap pre-view]( https://raw.githubusercontent.com/rayliuca/Ymap/master/doc/example_edmonton.png) </kbd>
 
 ### Dependency
 
@@ -55,7 +53,7 @@ To plot your own data, there are some things you will need to do
 
 
 ### Structure
-For necessary file and data structure, see [here]( https://github.com/rayliuca/Ymap/blob/master/doc/structure.md)
+For the necessary file and data structures, see [here]( https://github.com/rayliuca/Ymap/blob/master/doc/structure.md)
 
 
 ### Todos
