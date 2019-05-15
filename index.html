@@ -92,21 +92,49 @@
             margin-right: 8px;
             opacity: 0.7;
         }
+		
+		.control_panel {
+			float:left;
+			margin: 60px auto 20px;
+			width:100%;		
+		}
+		
+		.map_panel {
+			float:left;
+			width:100%;		
+			height:100%;
+		}
+		
+		@media (min-height: 600px) and (min-width: 900px) {
+		.control_panel {
+			margin: 0;
+			float:left;
+			width:20%;		
+		}
+		
+		.map_panel {
+			float:left;
+			width:80%;		
+			height:100%;
+		}
+		
+		}
+		
     </style>
 
 </head>
 
 <body bgcolor="#e8e8e8">
     <div id="top_banner" style="padding:15px; background-color:#FFFFFF; margin: auto auto ;width: 100%;  text-align:center;box-shadow: 0 0 10px -2px black">
-        <h1 style="color: #000;font-size: 18pt; font-family: 'arial black', 'avant garde';margin: 0px auto 0;">Ymap (Beta)</h1>
+        <h1 style="color: #000;font-size: 18pt; font-family: 'arial black', 'avant garde';margin: 0px auto 0;">Ymap (Edmonton's Property Assessment)</h1>
     </div>
     <div id="overlay" style="text-align: center">
         <img style="margin:10% auto; height:200px;width:200px;" src="https://upload.wikimedia.org/wikipedia/commons/a/a3/Lightness_rotate_36f_cw.gif" alt="Please wait a sec." />
     </div>
 
-    <div id="parent" style=" display: table; margin: 0 auto;width: 95%; height:1000px;">
+    <div id="parent" style=" display: table; margin: 0 auto;width: 95%; height:0px;">
 
-        <div id="left panel" style="float:left;width:80%; height:100%;">
+        <div id="left panel" class="map_panel";">
 
             <div id="mapid" style="z-index: 1;width:95%; height:100%; margin: 15px auto;border-style: groove;border-radius:20px;padding:6px;"></div>
             <div id="tos" style="margin:0 auto;text-align:center">
@@ -115,7 +143,7 @@
 
             </div>
         </div>
-        <div id="right panel" style="float:left;width:20%; height:100%;">
+        <div id="right panel" class="control_panel">
             <div id="ui_container" style="background:#ffffff; width:85%;margin:15px auto;box-shadow: 0px 2px 8px -3px #777;border-radius:20px;padding:10px">
 
                 <div class="input-field col s12">
@@ -191,7 +219,7 @@
     
     //////////////////////////////////////////////////////////////////////
 
-    var parent = document.getElementById("parent");
+    var parent = document.getElementById("left panel");
     var page_height = (window.innerHeight) -100;
     var map = document.getElementById("mapid");
 
