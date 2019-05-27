@@ -186,6 +186,7 @@ let data_selector = function(data_point, geo_data, selected_tag) {
 			return 0;
 		case true:
 			for (tag_count = 0; tag_count < selected_tag.length; tag_count++) {
+				if (selected_tag[tag_count.toString()]==="All") return 1;
 				if (typeof(data_point[tag1.toString()]) !== "undefined"){ 
 				try {current_tag = data_point[tag1.toString()];}
 				catch (err) {}
@@ -234,7 +235,7 @@ let getPoints = function(str1, str2, loc) {
 				let data1 = window[input_data_file_pefix.toString() + str1.toString()];
 				let data2 = window[input_data_file_pefix.toString() + str2.toString()];
 				if (data_selector(data1[parseInt(acc_num,10)], loc[parseInt(acc_num,10)], tag1_selected)) {
-					result_loc[parseInt(i,10)] = [data2[parseInt(acc_num,10)][parameter1.toString()] / data1[parseInt(acc_num,10)][parameter1.toString()] - 1, prop_info_obj.Latitude, prop_info_obj.Longitude, acc_num];
+				result_loc[parseInt(i,10)] = [data2[parseInt(acc_num,10)][parameter1.toString()] / data1[parseInt(acc_num,10)][parameter1.toString()] - 1, prop_info_obj.Latitude, prop_info_obj.Longitude, acc_num,input_data_file_pefix.toString() +" "+ str1.toString(),data1[parseInt(acc_num,10)][parameter1.toString()],input_data_file_pefix.toString() +" "+ str2.toString(), data2[parseInt(acc_num,10)][parameter1.toString()]];
 					//here is where you can change the output data formula
 				}
 
@@ -256,8 +257,8 @@ let get_color = function(val, min_val, max_val) {
 	switch (true) {
 		//if val is absolutely inside of the bounds  
 		case (val > 0 && val < 100):
-			let color_index = parseInt(val / 100 * (RGB_steps), 10);
-			let color_x = val - parseInt(val / (100 / RGB_steps), 10) * 100 / RGB_steps;
+			let color_index = parseInt(Math.round(val / 100 * (RGB_steps-1)), 10);
+			let color_x = val - parseInt(Math.round(val / (100 / RGB_steps)), 10) * 100 / RGB_steps;
 			//the RGB_gradient_function is essentially a linear interpolation between two rgb settings
 			//RGB_gradient_function is nested arrays in the form of [[R=[slope, intercept],G=....],[R=....]...]
 			r = RGB_gradient_function[parseInt(color_index,10)][0][0] * (val) / RGB_steps / 100 + RGB_gradient_function[parseInt(color_index,10)][0][1];
@@ -350,11 +351,14 @@ function plot_points(arr, parameter2_str) {
 		if (typeof arr[parseInt(i,10)] !== "undefined" && arr[parseInt(i,10)] !== null) {
 			//make the pop up texts
 			if (parameter2_str === "None") {
-				text = "<p> "+parameter1+": " + arr[parseInt(i,10)][0].toString() + "</p> <p>"+id_key+": " + arr[parseInt(i,10)][3].toString() + "</p>";
+				text = "<p> "+parameter1+": " + arr[parseInt(i,10)][0].toString() + "CAD</p> <p>"+id_key+": " + arr[parseInt(i,10)][3].toString() + "</p>";
 
 			} else {
-				text = "<p> "+parameter1+": " + (arr[parseInt(i,10)][0] * 100).toPrecision(3).toString() + "%</p> <p>"+id_key+": " + arr[parseInt(i,10)][3].toString() + "</p>";
 				arr[parseInt(i,10)][0] = arr[parseInt(i,10)][0] * 100;
+				text = "<p> "+parameter1+": " + (arr[parseInt(i,10)][0]).toPrecision(3).toString() + "%</p> <p>"+id_key+": " + arr[parseInt(i,10)][3].toString() + 
+						"</p><p>"+arr[parseInt(i,10)][4].toString()+ " ="+Math.round(parseInt(arr[parseInt(i,10)][5],10)).toString()+"CAD</p><p>"+
+						arr[parseInt(i,10)][6].toString()+" ="+Math.round(parseInt(arr[parseInt(i,10)][7],10)).toString()+"CAD</p>";
+				
 
 			}
 

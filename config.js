@@ -41,6 +41,7 @@ let time_option_list = ["2012", "2013", "2014", "2015", "2016", "2017", "2018","
 
 //In the example, this is the zoning list
 let tag_list = {
+	"Special":["All"],
 	"Residential Zones": ["RF1", "RF2", "RF3", "RSL", "PRL", "RF4", "RF5", "RF6", "RA7", "RA8", "RA9", "RR", "UCRH"],
 	"Commercial Zones": ["CNC", "CSC", "CB1", "CB2", "CB3", "CHY"],
 	"Industrial Zones": ["IB", "IL", "IM", "IH"],
