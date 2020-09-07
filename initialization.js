@@ -253,13 +253,13 @@ let mymap = L.map("mapid", {
 });
 
 mymap.setView(map_start_center, 12);
-// add map tile from wikimedia. Thanks wiki!
-L.tileLayer("https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png", {
+// add map tile from OpenStreetMap France. Thanks!
+L.tileLayer("http://a.tile.openstreetmap.fr/hot/{z}/{x}/{y}{r}.png", {
 	maxZoom: 18,
 	attribution: '<a href="https://rayliu.ca">Ray Liu</a>, ' +
 		'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
 		'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-		'<a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>',
+		'<a href="https://www.openstreetmap.fr/fonds-de-carte/">OpenStreetMap Fr</a>',
 	id: "OpenStreetMap.Mapnik"
 }).addTo(mymap);
 // set a layer group so the points can be easily removed
