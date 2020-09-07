@@ -254,7 +254,7 @@ let mymap = L.map("mapid", {
 
 mymap.setView(map_start_center, 12);
 // add map tile from OpenStreetMap France. Thanks!
-L.tileLayer("http://a.tile.openstreetmap.fr/hot/{z}/{x}/{y}{r}.png", {
+L.tileLayer("http://a.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
 	maxZoom: 18,
 	attribution: '<a href="https://rayliu.ca">Ray Liu</a>, ' +
 		'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
