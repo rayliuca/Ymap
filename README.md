@@ -5,7 +5,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7440bc9c90c7466494e4268fe1d1c520)](https://www.codacy.com/app/rayliuca/Ymap?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rayliuca/Ymap&amp;utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/f7f25493fc388f34ebeb/maintainability)](https://codeclimate.com/github/rayliuca/Ymap/maintainability)
 
-Ymap is an open-sourced, accessible, and interactive tool to visualize geospatial data. 
+Ymap is an open-sourced, accessible, and interactive tool to visualize geospatial data.
 
 - Uses HTML and JavaScript
 - Tested with Chrome and FireFox
@@ -16,11 +16,12 @@ Ymap is an open-sourced, accessible, and interactive tool to visualize geospatia
   - Compare between any two data sets (or just plot one)
   - Filter with parameters of your choosing using sliders and menus
   - Change the colour scale
-  - Points stay at the real world size regardless of the zoom 
+  - Points stay at the real world size regardless of the zoom
 
 ##### Why is it special compared to other service providers like Mapbox?
 -	Ymap can choose any two data sets and compare dynamically. Useful when there are many data sets
--	Flexibility: you want to plot the arctan of your data? Go into the lib.js file and do it within a minute 
+-	Flexibility: you want to plot the arctan of your data? Go into the lib.js file and do it within a minute
+
 ### Example
 
 
@@ -49,7 +50,7 @@ To plot your own data, there are some things you will need to do
 
 -	Replace the example data with your data (obviously)
 -	Update the config.js file to your desired settings
--	Update the HTML code to match your text 
+-	Update the HTML code to match your text
 
 
 ### Structure
@@ -77,4 +78,3 @@ This repo is released under MIT license
 [Wnumb]: <https://github.com/Leaflet/Leaflet>
 [RequireJS]: <https://github.com/Leaflet/Leaflet>
 [MaterializeCSS]: <https://github.com/Leaflet/Leaflet>
-
