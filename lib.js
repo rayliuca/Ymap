@@ -399,3 +399,18 @@ let user_plot = function() {
 
 };
 
+let clear_plot = function() {
+	data_points.clearLayers();
+	return loading_queue(-1);
+};
+
+let user_clear_plot = function() {
+	throbber(1);
+	loading_queue(1);
+	// we need tp give throbber some time to react, otherwise 
+	// the processes will jam the computer and the throbber will not show up
+	setTimeout(function() {
+		return clear_plot();
+	}, 50);
+
+};
