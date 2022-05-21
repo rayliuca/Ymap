@@ -1,1 +1,1 @@
-prop_list={'prop_info' :39,}prop_list={'prop_info' :40,}
+prop_list={'prop_info' :40,}
